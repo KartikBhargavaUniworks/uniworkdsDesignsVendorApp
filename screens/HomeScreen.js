@@ -73,11 +73,11 @@ const HomeScreen = ({ navigation }) => {
                             marginLeft: '10%',
                             marginRight: '10%', flexDirection: 'row'}} > 
                             <TouchableOpacity>
-                                <Text style = {{fontSize:23, color:'#FF0000', fontFamily:'comfortaa' }} onPress = {() => {handleVisible()}} >Decline</Text>
+                                <Text style = {{fontSize:23, color:'#FF0000' }} onPress = {() => {handleVisible()}} >Decline</Text>
                             </TouchableOpacity>
                             <View style={styles.signInFiller}/>
                             <TouchableOpacity  >
-                                <Text style = {{fontSize:23, color:'#008000', fontFamily:'comfortaa' }} onPress = {() => {handleVisible() , navigation.navigate('AfterAcceptScreen')}}>Accept</Text>
+                                <Text style = {{fontSize:23, color:'#008000' }} onPress = {() => {handleVisible() , navigation.navigate('AfterAcceptScreen')}}>Accept</Text>
                             </TouchableOpacity>
                        </View>
                     </View>
@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
         marginRight: '20%'
     },
     TypeStyle: {
-        fontFamily: "comfortaa-regular",
         color: "#000000",
     },
     signInFiller: {
@@ -103,7 +102,6 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     Number: {
-        fontFamily: "comfortaa-regular",
         color: "#121212",
     }
 })

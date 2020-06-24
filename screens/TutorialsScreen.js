@@ -3,8 +3,10 @@ import {View, Text, Button} from 'react-native'
 
 const TutorialsScreen = ({navigation}) =>{
     return(
-        <View>
-            <Button  title='Hello' onPress={()=>navigation.navigate('AfterAcceptScreen')} />
+        <View style = {{ flex:1, justifyContent:'center',alignItems:'center' }} >
+           
+           <Button  title='Receive Notification' onPress={()=>navigation.navigate('Show Modal Screen')} />
+          
         </View>
     )
 }

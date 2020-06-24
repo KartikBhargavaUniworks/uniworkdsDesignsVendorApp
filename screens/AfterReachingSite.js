@@ -4,6 +4,7 @@ import Feather from 'react-native-vector-icons/FontAwesome'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import FeatherIcon from "react-native-vector-icons/Feather";
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Complete from '../components/Complete';
 
 const AfterReachingSite = () => {
   const [selectedValue1, setSelectedValue1] = useState('');
@@ -30,38 +31,31 @@ const AfterReachingSite = () => {
             </View>
           </View>
         </View>
-        <View style={{ marginTop: '13%', flexDirection: 'row', marginLeft: '10%', marginRight: '10%' }} >
-          <View>
-            <TouchableOpacity >
-              <View >
-                <View style={styles.icon1Stack}>
-                  <FeatherIcon name="arrow-left" style={styles.icon1}></FeatherIcon>
-                  <View style={styles.rect4}>
-                    <FeatherIcon name="arrow-left" style={styles.icon2}></FeatherIcon>
-                  </View>
-                </View>
+        <View style={{ marginTop: '5%', flexDirection: 'row', marginHorizontal: '10%' }} >
+          <TouchableOpacity >
+            <View style={styles.icon1Stack}>
+              <FeatherIcon name="arrow-left" style={styles.icon1}></FeatherIcon>
+              <View style={styles.rect4}>
+                <FeatherIcon name="arrow-left" style={styles.icon2}></FeatherIcon>
               </View>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
           <View style={styles.signInFiller} >
             <View style={styles.rect3} >
-              <Text style={{ marginLeft: '10%', fontSize: 20 }} >Area 1</Text>
+              <Text style={{ fontSize: 20 }} >Area 1</Text>
             </View>
           </View>
-          <View>
-            <TouchableOpacity >
-              <View >
-                <View style={styles.icon1Stack}>
-                  <FeatherIcon name="arrow-right" style={styles.icon1}></FeatherIcon>
-                  <View style={styles.rect4}>
-                    <FeatherIcon name="arrow-right" style={styles.icon2}></FeatherIcon>
-                  </View>
-                </View>
+          <TouchableOpacity >
+            <View style={styles.icon1Stack}>
+              <FeatherIcon name="arrow-right" style={styles.icon1}></FeatherIcon>
+              <View style={styles.rect4}>
+                <FeatherIcon name="arrow-right" style={styles.icon2}></FeatherIcon>
               </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: '25%', marginLeft: '8%' }} >
+            </View>
+          </TouchableOpacity>
+        </View>      
+        <View style = {{ flex:1, marginTop:'21%' }} >
+        <View style={{ flexDirection: 'row', marginLeft: '8%' }} >
           <View style={{ alignSelf: 'center' }} >
             <Text style={{ fontSize: 16, fontWeight: 'bold' }} >2:00 pm</Text>
           </View>
@@ -82,7 +76,7 @@ const AfterReachingSite = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '8%' }} >
+        <View style={{ flexDirection: 'row', marginTop: 15, marginLeft: '8%' }} >
           <View style={{ alignSelf: 'center' }} >
             <Text style={{ fontSize: 16, fontWeight: 'bold' }} >7:00 pm</Text>
           </View>
@@ -103,59 +97,56 @@ const AfterReachingSite = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ alignItems: 'flex-end', marginTop:'5%', marginRight:'10%' }} >
-          <View style = {{ flexDirection:'row' }} >
-          <View style = {{ alignSelf:'center', marginRight:'2%' }} >
-          <Text  >Site Cleaned</Text>
+          </View>     
+        <View style={{ alignItems: 'flex-end', marginTop: 15, marginRight: '10%' }} >
+          <View style={{ flexDirection: 'row' }} >
+            <View style={{ alignSelf: 'center', marginRight: '2%' }} >
+              <Text  >Site Cleaned</Text>
+            </View>
+            <CheckBox
+            />
           </View>
-          <CheckBox
-          />
+        </View>
+        <View style={{ marginTop: '15%', alignItems: 'flex-end', marginRight: '10%' }} >
+          <Text style={{ color: '#5D83C6', fontSize: 16 }} >Report an issue</Text>
+        </View>
+        <View style={{ flex: 1 }} >
+          <View style={{ flexDirection: 'row', marginHorizontal: '20%', marginTop: 15 }} >
+            <Text style={styles.TypeStyle, { fontSize: 20 }} >Type</Text>
+            <View style={styles.signInFiller}></View>
+            <Text style={styles.Number, { fontSize: 20 }}>Number</Text>
           </View>
-        </View>
-        <View style = {{ marginTop:'15%' , alignItems:'flex-end', marginRight:'10%' }} >
-            <Text style = {{ color:'#5D83C6', fontSize:16 }} >Report an issue</Text>
+          <View style={{
+            marginTop: 15,
+            marginLeft: '20%', marginRight: '25%', flexDirection: 'row'
+          }}>
+            <Text style={styles.TypeStyle} >Skills</Text>
+            <View style={styles.signInFiller}></View>
+            <Text style={styles.Number}>18</Text>
           </View>
-        <View style={styles.SiteEngineerRow}>
-          <Text style={{ color: '#353535', fontFamily: 'Comfortaa', fontSize: 18, fontWeight: 'bold' }} >Address </Text>
-          <View style={styles.SiteEngineerFiller}></View>
-          <Feather name="share-alt" color="black" size={25} style={{ top: 5 }} />
-        </View>
-        <View style={styles.ModalRow}>
-          <Text style={styles.TypeStyle, { fontSize: 20 }} >Type</Text>
-          <View style={styles.signInFiller}></View>
-          <Text style={styles.Number, { fontSize: 20 }}>Number</Text>
-        </View>
-        <View style={{
-          marginTop: '7%',
-          marginLeft: '20%',
-          marginRight: '25%', flexDirection: 'row'
-        }}>
-          <Text style={styles.TypeStyle} >Skills</Text>
-          <View style={styles.signInFiller}></View>
-          <Text style={styles.Number}>18</Text>
-        </View>
-        <View style={{
-          marginTop: '5%',
-          marginLeft: '20%',
-          marginRight: '25%', flexDirection: 'row'
-        }}>
-          <Text style={styles.TypeStyle} >Semi Skilled</Text>
-          <View style={styles.signInFiller}></View>
-          <Text style={styles.Number}>269</Text>
-        </View>
-        <View style={{
-          marginTop: '5%',
-          marginLeft: '20%',
-          marginRight: '25%', flexDirection: 'row'
-        }}>
-          <Text style={styles.TypeStyle} >Unskilled</Text>
-          <View style={styles.signInFiller}></View>
-          <Text style={styles.Number}>25</Text>
+          <View style={{
+            marginTop: 15,
+            marginLeft: '20%',
+            marginRight: '25%', flexDirection: 'row'
+          }}>
+            <Text style={styles.TypeStyle} >Semi Skilled</Text>
+            <View style={styles.signInFiller}></View>
+            <Text style={styles.Number}>269</Text>
+          </View>
+          <View style={{
+            marginTop: 15,
+            marginLeft: '20%',
+            marginRight: '25%', flexDirection: 'row'
+          }}>
+            <Text style={styles.TypeStyle} >Unskilled</Text>
+            <View style={styles.signInFiller}></View>
+            <Text style={styles.Number}>25</Text>
+          </View>
         </View>
         <View style={{ alignItems: 'center', marginTop: '12%' }}  >
           <Text style={{ fontSize: 36 }} >478 sqft</Text>
         </View>
-        <View style={{ alignItems: 'center', marginTop: '13%', flexDirection: 'row', marginLeft: '15%', marginRight: '8%' }}>
+        <View style={{ alignItems: 'center', marginTop: 25, flexDirection: 'row', marginLeft: '15%', marginRight: '8%' }}>
           <TouchableOpacity   >
             <Text style={{ fontSize: 24, color: '#FF0000' }}>Cancel</Text>
           </TouchableOpacity >
@@ -210,7 +201,6 @@ const styles = StyleSheet.create({
     bottom: 0
   },
   TypeStyle: {
-    fontFamily: "comfortaa-regular",
     color: "#000000",
   },
   signInFiller: {
@@ -219,7 +209,6 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   Number: {
-    fontFamily: "comfortaa-regular",
     color: "#121212",
   },
   ModalRow: {
