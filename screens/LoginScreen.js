@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, } from "react-native";
-import Complete from "../components/Complete";
 import Feather from 'react-native-vector-icons/Feather';
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { ScrollView } from "react-native-gesture-handler";
@@ -15,7 +14,6 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
     phoneNumber: '',
     checkPhoneNumber: false
   })
-  const value = (data.phoneNumber.length == 10) ? true : false
 
   const handlePasswordChange = (val) => {
     setData({
