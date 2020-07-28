@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, BackHandler, AsyncStorage } from 'react-native';
 import { Camera } from 'expo-camera';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-export default function CameraComponent() {
+ const  CameraComponent = ({navigation})=> {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null)
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [photoUrl, setPhotoUrl] =useState("")
+  const handlePhotoUrl=async(val)=>{
+    console.log(val)
+   let result = await AsyncStorage.setItem('AadhaarPhotoUri', val)
+   navigation.navigate('Payment Details')
+  }
 useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -32,8 +37,8 @@ if (hasPermission === null) {
           }}>
           <TouchableOpacity style={{alignSelf: 'center', marginBottom:'5%' ,}}  onPress={async() => {
             if(cameraRef){
-              let photo = await cameraRef.takePictureAsync();
-              console.log('photo', photo.uri);
+              let photo =  await cameraRef.takePictureAsync();
+              handlePhotoUrl(photo.uri)
             }
           }}>
             <View style={{ 
@@ -61,3 +66,4 @@ if (hasPermission === null) {
     </View>
   );
 }
+export default CameraComponent;

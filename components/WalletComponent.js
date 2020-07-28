@@ -3,10 +3,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather'
 
-const WalletComponent = ({ bookingId, Name, paidOrNot, Address , Amount}) => {
-   
-    let address = Address.substring(0,12)+"..."
-    let amount = "₹ "  + Amount
+const WalletComponent = ({ bookingId, Name, paidOrNot, Address, Amount }) => {
+
+    let address = Address.substring(0, 12) + "..."
+    let amount = "₹ " + Amount
     return (
         <View style={styles.mainContainer} >
             <View style={styles.contentBox} >
@@ -18,11 +18,10 @@ const WalletComponent = ({ bookingId, Name, paidOrNot, Address , Amount}) => {
                 <View style={styles.filler} />
                 <View>
                     {paidOrNot ?
-                        
                         <TouchableOpacity style={{ marginRight: '5%' }} >
                             <Feather name='check-square' size={24} style={{ color: '#4ACF4E' }} />
                         </TouchableOpacity>
-                        : 
+                        :
                         <TouchableOpacity style={{ marginRight: '5%' }} >
                             <Feather name='minus-square' size={24} style={{ color: '#CF604A' }} />
                         </TouchableOpacity>

@@ -2,49 +2,72 @@ import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 
-function OTP(props) {
-  return (
-   <View style = {{flex:1}} >
+export default class OTP extends Component {
 
-     <View   style = {{ flex:0.6 , justifyContent: "space-evenly" ,  flexDirection:'row' }}  >
-       <TextInput
-      
-      maxLength = {1}
-      style = {{ backgroundColor: '#fef4f2', fontWeight: '600' , alignSelf: 'center', padding: 10 , fontSize: 20 , height: 55 , width:'10%', borderRadius: 10, borderWidth : 0.5, borderColor : 'grey' }}
-      />
-       <TextInput
-      
-      maxLength = {1}
-      style = {{ backgroundColor: '#fef4f2', fontWeight: '600' , alignSelf: 'center', padding: 10 , fontSize: 20 , height: 55 , width:'10%', borderRadius: 10, borderWidth : 0.5, borderColor : 'grey' }}
-      />
-       <TextInput
-      
-      maxLength = {1}
-      style = {{ backgroundColor: '#fef4f2', fontWeight: '600' , alignSelf: 'center', padding: 10 , fontSize: 20 , height: 55 , width:'10%', borderRadius: 10, borderWidth : 0.5, borderColor : 'grey' }}
-      />
-       <TextInput
-      
-      maxLength = {1}
-      style = {{ backgroundColor: '#fef4f2', fontWeight: '600' , alignSelf: 'center', padding: 10 , fontSize: 20 , height: 55 , width:'10%', borderRadius: 10, borderWidth : 0.5, borderColor : 'grey' }}
-      />
-       <TextInput
-      
-      maxLength = {1}
-      style = {{ backgroundColor: '#fef4f2', fontWeight: '600' , alignSelf: 'center', padding: 10 , fontSize: 20 , height: 55 , width:'10%', borderRadius: 10, borderWidth : 0.5, borderColor : 'grey' }}
-      />
-       <TextInput
-      
-      maxLength = {1}
-      style = {{ backgroundColor: '#fef4f2', fontWeight: '600' , alignSelf: 'center', padding: 10 , fontSize: 20 , height: 55 , width:'10%', borderRadius: 10, borderWidth : 0.5, borderColor : 'grey' }}
-      />
-     </View>
-   </View>
-  );
+  constructor(props){
+    super(props)
+    this.state={
+      otp1:"",
+      otp2:"",
+      otp3:"",
+      otp4:"",
+      otp5:"",
+      otp6:"",
+    }
+  }
+  handle = (val) =>{
+    console.log(this.state.otp1,this.state.otp2,this.state.otp3,this.state.otp4,this.state.otp5,val)
+    this.props.save(this.state.otp1,this.state.otp2,this.state.otp3,this.state.otp4,this.state.otp5,val)
+    this.setState({
+      otp6:val
+    })
+    
+    //
+  }
+  render() {
+    return (
+      <View style={{ flex: 1 }} >
+
+        <View style={{ flex: 0.6, justifyContent: "space-evenly", flexDirection: 'row' }}  >
+          <TextInput
+            maxLength={1}
+            style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
+            onChangeText={(val)=>this.setState({otp1:val})}
+          />
+          <TextInput
+            maxLength={1}
+            style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
+            onChangeText={(val)=>this.setState({otp2:val})}
+          />
+          <TextInput
+            maxLength={1}
+            style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
+            onChangeText={(val)=>this.setState({otp3:val})}
+          />
+          <TextInput
+            maxLength={1}
+            style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
+            onChangeText={(val)=>this.setState({otp4:val})}
+          />
+          <TextInput
+            maxLength={1}
+            style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
+            onChangeText={(val)=>this.setState({otp5:val})}
+          />
+          <TextInput
+            maxLength={1}
+            style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
+            onChangeText={(val)=> this.handle(val)}
+          />
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     flexDirection: "row"
   },
   rect5: {
@@ -94,5 +117,3 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
-
-export default OTP;

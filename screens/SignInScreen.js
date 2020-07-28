@@ -1,159 +1,263 @@
-import React from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, } from "react-native";
+import React, { Component } from "react";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, AsyncStorage, Dimensions, } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import { ScrollView } from "react-native-gesture-handler";
 import OTP from "../components/OTP";
 import FeatherIcon from "react-native-vector-icons/Feather";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
-function SignInScreen({ navigation }) {
+export default class SignInScreen extends Component {
 
-  const [] = React.useState(['-', '-', '-', '-', '-', '-']);
-  const [] = React.useState('');
+  constructor(props) {
+    super(props)
+    this.state = {
+      userName: "",
+      password: "",
+      secureTextEntry: true,
+      phoneNumber: "",
+      checkPhoneNumber: false,
+      showOtp: false,
+      otp1: "",
+      otp2: "",
+      otp3: "",
+      otp4: "",
+      otp5: "",
+      otp6: "",
+      Contractor: true,
+      SuperVisor: false,
+      confirmSignUp: true,
+      showType: false,
+    }
+  }
 
-  const [data, setData] = React.useState({
-    email: '',
-    password: '',
-    check_textInputChange: false,
-    secureTextEntry: true,
-    phoneNumber: '',
-    checkPhoneNumber: false,
-    showOtp: false
-  })
-  const value = (data.phoneNumber.length == 10) ? true : false
 
-  const handlePasswordChange = (val) => {
-    setData({
-      ...data,
-      password: val
+  updateSecureTextEntry = () => {
+    this.setState({ secureTextEntry: !this.state.secureTextEntry })
+  }
+
+
+  signUp = async () => {
+    console.log(this.state)
+    try {
+      const result = await fetch("https://still-plains-75686.herokuapp.com/auth/register", {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          Username: this.state.userName,
+          Phone_number: "+91" + this.state.phoneNumber,
+          Password: this.state.password
+        })
+      })
+      this.setState({
+        showOtp: true
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  saveOtp = (val1, val2, val3, val4, val5, val6) => {
+    console.log(val1, val2, val3, val4, val5, val6)
+    this.setState({
+      otp1: val1,
+      otp2: val2,
+      otp3: val3,
+      otp4: val4,
+      otp5: val5,
+      otp6: val6,
     })
   }
 
-  const updateSecureTextEntry = () => {
-    setData({
-      ...data,
-      secureTextEntry: !data.secureTextEntry
-    })
+  confirmSignup = async () => {
+    var code = this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4 + this.state.otp5 + this.state.otp6
+    console.log(code)
+    // try {
+    //   const result = await fetch("https://still-plains-75686.herokuapp.com/auth/confirmSignup", {
+    //     method: 'POST',
+    //     headers: {
+    //       Accept: '*/*',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       Username: this.state.userName,
+    //       ConfirmationCode: code,
+    //       Password:this.state.password,
+    //     })
+    //   }).then((response)=> response.json())
+    //   .then((json)=>
+    //   this.saveTokenandNavigate(json.accesstoken)
+    //   )
+    // } catch (e) {
+    //   console.log(e.toString())
+    // }
+    //this.props.navigation.navigate("Personal Details")
+    this.props.navigation.navigate("HomeScreen")
+  }
+  saveTokenandNavigate = async (val) => {
+    await AsyncStorage.setItem('accessToken', val)
+    await AsyncStorage.setItem('userName', this.state.userName)
+    console.log(await AsyncStorage.getItem('accessToken'))
+    this.props.navigation.navigate("HomeScreen")
   }
 
-  const handlePhoneNumber = (val) => {
-    setData({
-      ...data,
-      phoneNumber: val,
-      checkPhoneNumber: value
-    })
+  handleTypechosen = () => {
+    this.setState({ Contractor: !this.state.Contractor, SuperVisor: !this.state.SuperVisor })
   }
-  const handleOtp = () => {
-    setData({
-      ...data,
-      showOtp: true
-    })
-  }
-  return (
-    <ScrollView scrollEnabled = {true} >
-      <View style = {styles.mainContainer} >
-        <View style={styles.signInRow}>
-          <Text style={styles.signIn} >Sign in</Text>
-          <View style={styles.signInFiller}></View>
-          <Text style={styles.logIn} onPress={() => navigation.navigate('LoginScreen')}>Log in</Text>
-        </View>
-        <View style={styles.containerRecatngleName}>
-          <View style = {styles.rect3} >
-            <TextInput placeholder='Name' style = {styles.textInput} />
-            <Text style = {{ marginTop:15 }} >Name</Text>
+
+  render() {
+    return (
+      <ScrollView scrollEnabled={true} >
+        <View style={styles.mainContainer} >
+          <View style={styles.signInRow}>
+            <Text style={styles.signIn} >Sign in</Text>
+            <View style={styles.signInFiller}></View>
+            <Text style={styles.logIn} onPress={() => this.props.navigation.navigate('LoginScreen')}>Log in</Text>
           </View>
-        </View>
-        <View style={styles.containerRecatnglePassword}>
-          <View style={styles.rect3} >
-            <TextInput style={styles.textInput}
-              secureTextEntry={data.secureTextEntry ? true : false}
-              onChangeText={(val) => handlePasswordChange(val)}
-              placeholder="Password"
-            />
+          <View style={styles.containerRecatngleName}>
+            <View style={styles.rect3} >
+              <TextInput placeholder='Name'
+                style={styles.textInput}
+                onChangeText={(username) => this.setState({ userName: username })}
+                value={this.state.userName} />
+              <Text style={{ marginTop: 15 }} >Name</Text>
+            </View>
+          </View>
+          <View style={styles.containerRecatnglePassword}>
+            <View style={styles.rect3} >
+              <TextInput style={styles.textInput}
+                secureTextEntry={this.state.secureTextEntry ? true : false}
+                onChangeText={(passWord) => this.setState({ password: passWord })}
+                placeholder="Password"
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={this.updateSecureTextEntry}
+              >
+                {this.state.secureTextEntry ?
+                  <Feather
+                    name="eye-off"
+                    color="grey"
+                    size={20}
+                  />
+                  :
+                  <Feather
+                    name="eye"
+                    color="grey"
+                    size={20}
+                  />
+                }
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.containerRecatnglePhone}>
+            <View style={styles.rect3} >
+              <TextInput style={styles.textInputPhone}
+                onChangeText={(number) => this.setState({ phoneNumber: number })}
+                keyboardType="numeric"
+                maxLength={10}
+                placeholder="9839xxxxxx"
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                disable={true}
+              >
+                <Text style={{ color: 'grey', marginRight: 10 }} onPress={this.signUp} >Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View >
+            {this.state.showOtp ?
+              <View style={styles.otpmainContainer}>
+                <Text style={{ fontSize: 35 }} >OTP</Text>
+                <View style={styles.otpContainer}>
+                  <OTP save={this.saveOtp} ></OTP>
+                </View>
+              </View>
+              : null}
+          </View>
+          <View style={{ marginStart: '20%', marginTop: '15%' }} >
+            <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold' }} >I am</Text>
+          </View>
+          <View
+            style={[
+              styles.buttons,
+            ], { flex: 1, justifyContent: 'center', flexDirection: 'row', marginTop: 10 }}
+          >
             <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={updateSecureTextEntry}
+              style={[
+                styles.button,
+                {
+                  backgroundColor: this.state.Contractor ? "#ffffff" : "#EBEBEB",
+                  elevation: this.state.Contractor ? 2 : 0
+                },
+              ]}
+              onPress={this.handleTypechosen}
             >
-              {data.secureTextEntry ?
-                <Feather
-                  name="eye-off"
-                  color="grey"
-                  size={20}
-                />
-                :
-                <Feather
-                  name="eye"
-                  color="grey"
-                  size={20}
-                />
-              }
+              <Text style={{ color: this.state.Contractor ? '#76C662' : "#000000" }}>Contractor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { backgroundColor: this.state.SuperVisor ? "#ffffff" : "#EBEBEB", elevation: this.state.SuperVisor ? 2 : 0 },
+              ]}
+              onPress={this.handleTypechosen}
+            >
+              <Text style={{ color: this.state.SuperVisor ? '#76C662' : "#000000" }}>Supervisor</Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View style = {{ marginTop:20, marginLeft:'15%' }} >
-          <Text style = {{ color:'black' , fontSize:18}} >Security Question</Text>
-        </View>
-        <View  style = {{borderBottomWidth:1,marginLeft:'15%', maxWidth:'70%', flexDirection:'row' , marginTop:5}} >
-        <TextInput placeholder='Type Here' style = {styles.textInputPhone }/>
-        <MaterialIcons name = 'edit' style = {{ color:'grey', marginTop:15, fontSize:15 }}/>
-        </View>
-        <View style = {{ marginTop:18, marginLeft:'15%' }} >
-          <Text style = {{ color:'black' , fontSize:18}} >Answer</Text>
-        </View>
-        <View  style = {{borderBottomWidth:1,marginLeft:'15%', maxWidth:'70%', flexDirection:'row' , marginTop:5}} >
-        <TextInput placeholder='Type Here' style = {styles.textInputPhone }/>
-        <MaterialIcons name = 'edit' style = {{ color:'grey', marginTop:15, fontSize:15 }}/>
-        </View>
-        <View style={styles.containerRecatnglePhone}>
-          <View style={styles.rect3} >
-            <TextInput style={styles.textInputPhone}
-              onChangeText={(val) => handlePhoneNumber(val)}
-              keyboardType="numeric"
-              maxLength={10}
-              placeholder="9839xxxxxx"
-            />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              disable={true}
-            >
-              {value ?
-                <Text style={{ color: 'grey', marginRight: 10 }} onPress={handleOtp} >Confirm</Text>
-                : null}
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View >
-          {data.showOtp ?
-            <View style={styles.otpmainContainer}>
-               <Text style={{ fontSize: 35 }} >OTP</Text>
-              <View style={styles.otpContainer}>
-                <OTP></OTP>
+          {
+            this.state.Contractor ?
+              <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 5 }} >
+                <Text style={{ color: '#353535', fontSize: 14, fontStyle: 'normal', maxWidth: '60%', opacity: 0.5 }} >Contractor is a person who owns the firm.</Text>
+              </View>
+              :
+              <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop:5 }} >
+                <Text style={{ color: '#353535', fontSize: 14, fontStyle: 'normal', maxWidth: '60%', opacity: 0.5 }} >Supervisor is the person who works under the contractor.</Text>
+            </View>
+          }
+          {
+            this.state.SuperVisor?
+            <View style={styles.containerRecatnglePhone}>
+            <View style={styles.rect3} >
+              <TextInput style={styles.textInputPhone}
+                onChangeText={(number) => this.setState({ phoneNumber: number })}
+                keyboardType="numeric"
+                maxLength={10}
+                placeholder="9839xxxxxx"
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                disable={true}
+              >
+                <Text style={{ color: 'grey', marginRight: 10 }} onPress={this.signUp} >Contractor's Phone</Text>
+              </TouchableOpacity>
+            </View>
+          </View> :
+          null
+          }
+        <View style={styles.bottomContainer}>
+          <TouchableOpacity onPress={this.confirmSignup} >
+            <View >
+              <View style={styles.icon1Stack}>
+                <FeatherIcon name="arrow-right" style={styles.icon1}></FeatherIcon>
+                <View style={styles.rect4}>
+                  <FeatherIcon name="arrow-right" style={styles.icon2}></FeatherIcon>
+                </View>
               </View>
             </View>
-            : null}
+          </TouchableOpacity>
         </View>
-        <View style={styles.bottomContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Personal Details')} >
-                    <View >
-                        <View style={styles.icon1Stack}>
-                            <FeatherIcon name="arrow-right" style={styles.icon1}></FeatherIcon>
-                            <View style={styles.rect4}>
-                                <FeatherIcon name="arrow-right" style={styles.icon2}></FeatherIcon>
-                            </View>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            </View>
-      </View>
-    </ScrollView>
-  );
+        </View>
+      </ScrollView >
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginBottom:"30%"
+    marginBottom: "30%"
   },
   containerRecatngleName: {
     marginTop: 70,
@@ -208,8 +312,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   bottomContainer: {
-   top:'10%',
-    alignItems:'center',
+    top: '10%',
+    alignItems: 'center',
     justifyContent: 'flex-end',
   },
   textInput: {
@@ -234,11 +338,11 @@ const styles = StyleSheet.create({
   otpmainContainer: {
     flex: 1,
     alignItems: 'center',
-    top:20
+    top: 20
   },
   otpContainer: {
     flexDirection: 'row',
-    top:10
+    top: 10
   },
   otpBox: {
     padding: 10,
@@ -277,7 +381,26 @@ const styles = StyleSheet.create({
   icon1Stack: {
     width: 60,
     height: 60
-  }
+  },
+  buttons: {
+    flexDirection: "row",
+    backgroundColor: "#EBEBEB",
+    borderRadius: 10,
+    marginLeft: 20,
+    width: "60%",
+    height: 60,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  button: {
+    width: "35%",
+    height: 55,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000000",
+    shadowOffset: { width: 2, height: 10 },
+  },
 });
 
-export default SignInScreen;
+
