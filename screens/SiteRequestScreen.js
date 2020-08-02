@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View, Button, StyleSheet, Dimensions, Image } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Image } from 'react-native';
 import Feather from 'react-native-vector-icons/FontAwesome'
 import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker } from 'react-native-maps';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import ViewPager from '@react-native-community/viewpager';
+import images from '../assets/images'
 
 class MapsView extends React.Component {
   onRegionChange(region) {
@@ -15,7 +15,7 @@ class MapsView extends React.Component {
     var mapStyle = [{ "elementType": "geometry", "stylers": [{ "color": "#242f3e" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#746855" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#242f3e" }] }, { "featureType": "administrative.locality", "elementType": "labels.text.fill", "stylers": [{ "color": "#d59563" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#d59563" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#263c3f" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#6b9a76" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#38414e" }] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [{ "color": "#212a37" }] }, { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#9ca5b3" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#746855" }] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{ "color": "#1f2835" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#f3d19c" }] }, { "featureType": "transit", "elementType": "geometry", "stylers": [{ "color": "#2f3948" }] }, { "featureType": "transit.station", "elementType": "labels.text.fill", "stylers": [{ "color": "#d59563" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#17263c" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#515c6d" }] }, { "featureType": "water", "elementType": "labels.text.stroke", "stylers": [{ "color": "#17263c" }] }];
     return (
       <MapView
-        style={{  width: '100%', height: 400 }}
+        style={{ width: '100%', height: 400 }}
         scrollEnabled={true}
         initialRegion={{
           latitude: 17.437328,
@@ -37,8 +37,14 @@ class MapsView extends React.Component {
     );
   }
 }
-const SiteRequestScreen  = ({ navigation: { goBack }, navigation }) => {
+const SiteRequestScreen = ({ navigation: { navigate, goBack }}) => {
   const [showDescription, setShowDescription] = useState(false)
+  var Images = [
+    images.welcom1Image,
+    images.welcom2Image,
+    images.welcom3Image,
+    images.welcom4Image,
+  ]
   var data = {
     descriptionText: 'Prepare the wall by Making & Chipping (wall choosing). Installation by Pipe installation & Waterproofing Testing by pressure & leakge testing.Finishing by Filling the condult with mortar . Hacking the finish for bonding.Fixing mesh on the closed conduits'
   }
@@ -53,16 +59,26 @@ const SiteRequestScreen  = ({ navigation: { goBack }, navigation }) => {
   const handleShowDescription = () => {
     setShowDescription(!showDescription)
   }
-  let tools=['Pen/Pencil','Measuring Tape', 'Screwdrivers','Cuttinpliers/ Nail Picker', 'Drilling machine and drill bits']
-  const renderTools=({item})=>{
-    return(
+  let tools = ['Pen/Pencil', 'Measuring Tape', 'Screwdrivers', 'Cuttinpliers/ Nail Picker', 'Drilling machine and drill bits']
+  const renderTools = ({ item }) => {
+    return (
       <Text style={{ marginLeft: '20%', marginTop: '5%' }} >-{item} </Text>
+    )
+  }
+  const renderImages = ({ item }) => {
+    return (
+      <View>
+        <Image
+          style={{ height: 300 }}
+          source={item}
+        />
+      </View>
     )
   }
   return (
     <ScrollView >
       <View style={styles.mainContainer} >
-      <Text style={{ color: '#909090', fontSize: 30, alignSelf: 'center' }} >Wooden Partition</Text>
+        <Text style={{ color: '#909090', fontSize: 30, alignSelf: 'center' }} >Wooden Partition</Text>
         <Text style={{ color: '#909090', fontSize: 18, alignSelf: 'center', opacity: 0.5 }} >Cutting & Preparing</Text>
         <View style={{ backgroundColor: '#000000', alignItems: 'center', marginTop: '5%' }} >
           <View style={{ alignItems: 'center', marginBottom: '5%' }} >
@@ -102,7 +118,7 @@ const SiteRequestScreen  = ({ navigation: { goBack }, navigation }) => {
           </View>
           <View style={{
             marginTop: 15,
-            marginLeft:'20%',marginRight:'25%', flexDirection: 'row'
+            marginLeft: '20%', marginRight: '25%', flexDirection: 'row'
           }}>
             <Text style={styles.TypeStyle} >Skills</Text>
             <View style={styles.signInFiller}></View>
@@ -127,49 +143,48 @@ const SiteRequestScreen  = ({ navigation: { goBack }, navigation }) => {
             <Text style={styles.Number}>25</Text>
           </View>
           <View style={{ flex: 1 }} >
-            <Text style={styles.TypeStyle, { top: 25, fontSize: 20, marginLeft: '15%', marginBottom:30 }} >Tools</Text>
-            <FlatList 
-            data={tools}
-            renderItem={renderTools}
+            <Text style={styles.TypeStyle, { top: 25, fontSize: 20, marginLeft: '15%', marginBottom: 30 }} >Tools</Text>
+            <FlatList
+              data={tools}
+              renderItem={renderTools}
             />
           </View>
           <View style={{ alignItems: 'center', marginTop: 60, flexDirection: 'row', marginLeft: '10%', marginRight: '10%' }}>
             <Text style={{ fontSize: 20, fontStyle: 'normal', color: '#353535' }}> {dates.dateFrom} </Text>
-            <View style={{  marginLeft: '10%' }} >
+            <View style={{ marginLeft: '10%' }} >
               <Text style={{ color: '#353535', fontSize: 20 }} >to</Text>
             </View>
             <Text style={{ fontSize: 20, marginLeft: '10%' }} >{dates.dateTo}</Text>
           </View>
-          <View style={{ alignItems: 'center', marginTop: 60, flexDirection: 'row', marginLeft: '33%', marginRight: '10%' }}>
+          <View style={{ alignItems: 'center', marginTop: 30, flexDirection: 'row', marginLeft: '33%', marginRight: '10%' }}>
             <Text style={{ fontSize: 20, fontStyle: 'normal', color: 'grey' }}> {Timing.timingFrom} </Text>
             <View style={{ alignItems: 'center', marginLeft: '5%' }} >
               <Text style={{ color: '#353535', fontSize: 20 }} >-</Text>
             </View>
             <Text style={{ fontSize: 20, marginLeft: '5%', color: 'grey' }} >{Timing.timingTo}</Text>
           </View>
-
-      <ViewPager style={{flex:1}} initialPage={0} orientation={"horizontal"}>
-        <View  key="0">
-        <Text>Hello</Text>
-        </View>
-        <View  key="1">
-        <Text>Hello</Text>
-        </View>
-        <View  key="2">
-        <Text>Hello</Text>
-        </View>
-      </ViewPager>
-    
+          <View style={{ flex: 1, marginTop: 60 }} >
+            <FlatList
+              data={Images}
+              renderItem={renderImages}
+              horizontal={true}
+            />
+          </View>
           <View style={{ alignItems: 'center', marginTop: '12%' }}  >
-            <Text style={{ fontSize: 36 }} >478 sqft</Text>
+            <Text style={{ fontSize: 36 }} >45,286 sqft</Text>
           </View>
-          <View style={{alignItems:'center', marginTop:50}} >
-        <TouchableOpacity style={styles.approvedButton} >
-          <View style={{ alignItems: 'center' }} >
-            <Text style={{ fontSize: 20, color: '#ffffff' }}>Submit</Text>
+          <View style={{ alignItems: 'center', marginTop: '12%' }}  >
+            <Text style={{ fontSize: 36 }} >₹ 42,000</Text>
           </View>
-        </TouchableOpacity >
-        </View>
+          <View style={{ flexDirection: 'row', marginTop: 50, marginHorizontal:'10%' }} >
+            <TouchableOpacity onPress={()=>navigate('SelectSupervisorScreen')} >
+              <Text style={{ fontSize: 24, color: '#93D152', fontWeight:'bold' }}>Confirm</Text>
+            </TouchableOpacity >
+            <View style={{flex:1, flexDirection:'row'}} />
+            <TouchableOpacity onPress={()=>goBack()} >
+              <Text style={{ fontSize: 24, color: '#FF0000', fontWeight:'bold' }}>Cancel</Text>
+            </TouchableOpacity >
+          </View>
         </View>
       </View>
     </ScrollView>

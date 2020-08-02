@@ -3,12 +3,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import HomeScreen from '../screens/HomeScreen'
 import TutorialsScreen from '../screens/TutorialsScreen';
 import WalletScreen from '../screens/WalletScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
-import ProfileScreen from '../screens/ProfileScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import SettingsHomeScreen from '../screens/settings/SettingsHomeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -52,7 +51,7 @@ const HomeTabScreen = () => (
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={SettingsHomeScreen}
         options={{
           tabBarLabel: 'Profile',
           tabBarColor: '#d02860',
