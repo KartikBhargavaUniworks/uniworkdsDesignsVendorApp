@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, AsyncStorage, } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { ScrollView } from "react-native-gesture-handler";
@@ -7,7 +7,6 @@ import { ScrollView } from "react-native-gesture-handler";
 function LoginScreen({ navigation: { goBack }, navigation }) {
 
   const [data, setData] = React.useState({
-    email: '',
     password: '',
     check_textInputChange: false,
     secureTextEntry: true,
@@ -29,6 +28,33 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
     })
   }
 
+  const login =async ()=> {
+    console.log(data)
+    try {
+    const result = await fetch('https://uniworksvendorapis.herokuapp.com/auth/login', {
+      method: 'POST',
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        Username: "+91" + data.phoneNumber,
+        Password: data.password
+      })
+    }).then(response=> response.json())
+    .then(json=>saveTokenandNavigate(json))
+    .catch(e=>console.log(e.toString()))
+    navigation.navigate('HomeScreen')
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const saveTokenandNavigate = async (val) => {
+  await AsyncStorage.setItem('accessToken', val)
+  console.log(await AsyncStorage.getItem('accessToken'))
+}
+
   return (
     <ScrollView scrollEnabled={true} >
       <View style={styles.mainContainer} >
@@ -40,6 +66,9 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
         <View style={styles.containerRecatnglePhone}>
           <TextInput style={styles.rect3}
             placeholder="9839xxxxxx"
+            keyboardType="numeric"
+            maxLength={10}
+            onChangeText={(phoneNumber)=>setData({phoneNumber})}
           />
         </View>
         <View style={styles.containerRecatnglePassword}>
@@ -75,7 +104,7 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.bottomContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')} >
+          <TouchableOpacity onPress={login} >
             <View >
               <View style={styles.icon1Stack}>
                 <FeatherIcon name="arrow-right" style={styles.icon1}></FeatherIcon>

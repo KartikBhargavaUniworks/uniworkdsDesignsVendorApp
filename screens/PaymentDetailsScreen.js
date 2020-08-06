@@ -49,10 +49,11 @@ function PaymentDetailsScreen(props, route) {
     try {
       let accessToken = await AsyncStorage.getItem('accessToken')
       let userName = await AsyncStorage.getItem('userName')
-      const result = await fetch("https://still-plains-75686.herokuapp.com/user/updateUserAttributes", {
-        method: 'PUT',
+      const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/1", {
+        method: 'POST',
         headers: {
-          authorization: accessToken
+          Accept: '*/*',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           UserName: userName,
@@ -66,10 +67,6 @@ function PaymentDetailsScreen(props, route) {
     } catch (e) {
       console.log(e)
     }
-  }
-  const handleUrl = () => {
-    const state = props.navigation
-    console.log(state.params.photo)
   }
 
   return (

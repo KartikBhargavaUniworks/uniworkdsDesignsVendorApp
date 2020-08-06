@@ -1,22 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, _FlatList, FlatList } from 'react-native'
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import Feather from 'react-native-vector-icons/Feather'
 import Entypo from 'react-native-vector-icons/Entypo'
+import Spinner from 'react-native-loading-spinner-overlay'
 
-const NotificationsScreen = ({navigation}) => {
-
-    let DataSuperVisor = [
-        {
-            name: 'Guddu',
-            phoneNumber: '9876756560',
-            id: '1'
-        },
-        {
-            name: 'Kartik',
-            phoneNumber: '9839391596',
-            id: '2'
-        }]
+const NotificationsScreen = ({ navigation }) => {
     let dataSiteRequest = [
         {
             area: '45,982 Sqft',
@@ -29,7 +18,6 @@ const NotificationsScreen = ({navigation}) => {
             amount: '50,200'
         }
     ]
-    let dataSupervisor = DataSuperVisor
     let UpcomingTasks = [
         {
             bookingId: 'UWHYD000010401',
@@ -88,17 +76,36 @@ const NotificationsScreen = ({navigation}) => {
             Amount: '24,500'
         },
     ]
+    const[siteRequests, setSiteRequests] = useState([]);
+    const[supervisors, setSupervisors] = useState([]);
+    const[isLoading, setLoading] = useState(true);
+    const fetchData = async ()=>{
+        let result = await  fetch('https://uniworksvendorapis.herokuapp.com/notifications/1')
+        .then(response=>{
+            return response.json()
+        })
+        .then(json=>{
+            setSiteRequests(json.projects)
+            setSupervisors(json.users)
+            setLoading(false)
+        })
+    }
+    useEffect(()=> {
+        console.log('trigger use effect hook');
+    fetchData()
+  },[] );
+  
     const FlatListItemSeparator = () => {
         return (
-          <View
-            style={{
-              height: 1,
-              width: "100%",
-              backgroundColor: "#000",
-            }}
-          />
+            <View
+                style={{
+                    height: 1,
+                    width: "100%",
+                    backgroundColor: "#000",
+                }}
+            />
         );
-      }
+    }
     const renderItem = ({ item }) => {
         return (
             <View style={{ backgroundColor: '#ffffff', flex: 1 }} >
@@ -109,12 +116,12 @@ const NotificationsScreen = ({navigation}) => {
                         <Entypo style={{ fontSize: 24, top: 4 }} name='cross' color='#E32626' />
                     </TouchableOpacity>
                 </View>
-                <Text style={{ color: '#353535', fontSize: 22, fontWeight: 'bold' }} >{item.name} </Text>
+                <Text style={{ color: '#353535', fontSize: 22, fontWeight: 'bold' }} >{item.userName} </Text>
                 <View style={{
                     flexDirection: 'row',
                     marginEnd: '5%',
                 }} >
-                    <Text style={{ marginTop: '5%' }} >+91-{item.phoneNumber}</Text>
+                    <Text style={{ marginTop: '5%' }} >{item.contact}</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }} />
                     <TouchableOpacity style={{ top: 5 }} >
                         <Text style={{ color: '#518A42', alignSelf: 'center', fontSize: 20, fontWeight: 'bold' }} >Approve</Text>
@@ -126,33 +133,33 @@ const NotificationsScreen = ({navigation}) => {
 
     const renderUpcomingTasks = ({ item }) => {
         return (
-            <View style={{flex:1}} >
-            <TouchableOpacity onPress={()=>navigation.navigate('UpcomingTaskScreen')} >
-                <View style={styles.contentBox} >
-                    <Text style={{ fontSize: 18 }} >Booking ID;{item.bookingId}</Text>
-                </View>
-                <View style={styles.contentBox} >
-                    <Text style={{ color: '#353535', fontSize: 18, fontWeight: 'bold' }} >{item.name} </Text>
-                    <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <Text style={{ color: '#353535', fontSize: 18 }} >{item.Area} Sqft</Text>
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    marginEnd: '5%',
-                    marginTop:'5%'
-                }} >
-                    <Text  >{item. Address.substring(0,20)}...</Text>
-                    <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center', bottom:5 }} >₹ {item.Amount}</Text>
-                </View>
-            </TouchableOpacity>
+            <View style={{ flex: 1 }} >
+                <TouchableOpacity onPress={() => navigation.navigate('UpcomingTaskScreen')} >
+                    <View style={styles.contentBox} >
+                        <Text style={{ fontSize: 18 }} >Booking ID;{item.bookingId}</Text>
+                    </View>
+                    <View style={styles.contentBox} >
+                        <Text style={{ color: '#353535', fontSize: 18, fontWeight: 'bold' }} >{item.name} </Text>
+                        <View style={{ flex: 1, flexDirection: 'row' }} />
+                        <Text style={{ color: '#353535', fontSize: 18 }} >{item.Area} Sqft</Text>
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginEnd: '5%',
+                        marginTop: '5%'
+                    }} >
+                        <Text  >{item.Address.substring(0, 20)}...</Text>
+                        <View style={{ flex: 1, flexDirection: 'row' }} />
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center', bottom: 5 }} >₹ {item.Amount}</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         )
     }
 
     const renderSiteRequest = ({ item }) => {
         return (
-            <TouchableOpacity onPress={()=>navigation.navigate('SiteRequestScreen')} >
+            <TouchableOpacity onPress={() => navigation.navigate('SiteRequestScreen')} >
                 <View style={styles.contentBox} >
                     <Text style={{ fontSize: 16 }} >Site Request</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }} />
@@ -160,20 +167,32 @@ const NotificationsScreen = ({navigation}) => {
                         <Entypo style={{ fontSize: 24, top: 4 }} name='cross' color='#E32626' />
                     </TouchableOpacity>
                 </View>
-                <Text style={{ color: '#353535', fontSize: 22, fontWeight: 'bold' }} >{item.area} </Text>
+                <Text style={{ color: '#353535', fontSize: 22, fontWeight: 'bold' }} >{item.totalArea} Sqft</Text>
                 <View style={{
                     flexDirection: 'row',
                     marginEnd: '5%',
                 }} >
-                    <Text style={{ marginTop: '5%' }} >{item.date}</Text>
+                    <Text style={{ marginTop: '5%' }} >{item.startDate}</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }} >₹ {item.amount}</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }} >₹ {item.budget}</Text>
                 </View>
             </TouchableOpacity>
         )
     }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }} showsVerticalScrollIndicator={false}>
+            {isLoading? 
+            
+            <Spinner
+            //visibility of Overlay Loading Spinner
+            visible={isLoading}
+            //Text with the Spinner
+            textContent={'Loading...'}
+            //Text style of the Spinner Text
+            textStyle={{color: '#FFF',}}
+          />
+            :
+            
             <View style={{ flex: 1 }} >
                 <Text style={{ alignSelf: 'center', marginTop: '10%', color: '#353535', fontSize: 24, fontWeight: 'bold', marginBottom: '5%' }} >Notifications</Text>
                 <View style={styles.rect3} >
@@ -191,13 +210,11 @@ const NotificationsScreen = ({navigation}) => {
                     <View style={styles.mainContainer} >
                         <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 18 }} >Approvals</Text>
                         <FlatList
-                            data={dataSupervisor}
-                            keyExtractor={(item) => item.id}
+                            data={supervisors}
                             renderItem={renderItem}
                         />
                         <FlatList
-                            data={dataSiteRequest}
-                            keyExtractor={(item) => item.date}
+                            data={siteRequests}
                             renderItem={renderSiteRequest}
                         />
 
@@ -206,15 +223,16 @@ const NotificationsScreen = ({navigation}) => {
                 <View style={styles.mainContainer} >
                     <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 18 }} >Upcoming Tasks</Text>
                     <Text style={{ marginTop: '5%', color: '#000000', fontSize: 18 }} >23/06/2020</Text>
-                    <FlatList
+                    {/* <FlatList
                         data={UpcomingTasks}
-                        style={{marginStart:'5%', marginTop:'5%', maxHeight:'100%', flex:1}}
+                        style={{ marginStart: '5%', marginTop: '5%', maxHeight: '100%', flex: 1 }}
                         keyExtractor={item => item.bookingId}
                         renderItem={renderUpcomingTasks}
                         ItemSeparatorComponent={FlatListItemSeparator}
-                    />
+                    /> */}
                 </View>
             </View>
+            }
         </ScrollView>
     )
 }
@@ -243,7 +261,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         marginVertical: '4%',
         marginHorizontal: '10%',
-        flex:1
+        flex: 1
     },
     contentBox: {
         flexDirection: 'row',

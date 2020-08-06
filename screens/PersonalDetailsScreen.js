@@ -52,7 +52,6 @@ function PersonalDetailsScreen({navigation}) {
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
       }
-
       let location = await Location.getCurrentPositionAsync({});
       setlatitude(location.coords.latitude);
       setlongitude(location.coords.longitude)

@@ -26,6 +26,7 @@ export default class SignInScreen extends Component {
       SuperVisor: false,
       confirmSignUp: true,
       showType: false,
+      supervisorNumber: ""
     }
   }
 
@@ -36,20 +37,21 @@ export default class SignInScreen extends Component {
 
 
   signUp = async () => {
-    console.log(this.state)
     try {
-      const result = await fetch("https://still-plains-75686.herokuapp.com/auth/register", {
+      const result = await fetch('https://uniworksvendorapis.herokuapp.com/auth/register', {
         method: 'POST',
         headers: {
           Accept: '*/*',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          Username: this.state.userName,
+          Username: this.state.userName.toLowerCase(),
           Phone_number: "+91" + this.state.phoneNumber,
           Password: this.state.password
         })
       })
+      let respone = await result.json()
+      console.log(respone)
       this.setState({
         showOtp: true
       })
@@ -72,33 +74,66 @@ export default class SignInScreen extends Component {
   confirmSignup = async () => {
     var code = this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4 + this.state.otp5 + this.state.otp6
     console.log(code)
-    // try {
-    //   const result = await fetch("https://still-plains-75686.herokuapp.com/auth/confirmSignup", {
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: '*/*',
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       Username: this.state.userName,
-    //       ConfirmationCode: code,
-    //       Password:this.state.password,
-    //     })
-    //   }).then((response)=> response.json())
-    //   .then((json)=>
-    //   this.saveTokenandNavigate(json.accesstoken)
-    //   )
-    // } catch (e) {
-    //   console.log(e.toString())
-    // }
-    //this.props.navigation.navigate("Personal Details")
-    this.props.navigation.navigate("HomeScreen")
+    if (this.state.showType == false) {
+      try {
+        const result = await fetch("https://uniworksvendorapis.herokuapp.com/auth/confirmSignup", {
+          method: 'POST',
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            Username: this.state.userName,
+            ConfirmationCode: code,
+            Password: this.state.password,
+          })
+        }).then((response) => response.json())
+          .then((json) => {
+            this.saveTokenandNavigate(json)
+          }
+
+          )
+      } catch (e) {
+        console.log(e.toString())
+      }
+      this.setState({ showType: true, showOtp: false })
+      console.log(this.state)
+    } else {
+      if (this.state.Contractor == true) {
+        const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/1", {
+          method: 'PUT',
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            role: 'CSVD'
+          })
+        }).catch(e => console.log(e.toString()))
+        this.props.navigation.navigate("Personal Details")
+      } else {
+        const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/1", {
+          method: 'PUT',
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            role: 'CSVR',
+            number: "+91".concat(this.state.supervisorNumber.toString()),
+          })
+        }).then(respone => respone.json())
+          .then(json => {
+            console.log(json)
+            this.props.navigation.navigate("Personal Details")
+          }).catch(e => console.log(e.toString()))
+      }
+    }
   }
   saveTokenandNavigate = async (val) => {
     await AsyncStorage.setItem('accessToken', val)
     await AsyncStorage.setItem('userName', this.state.userName)
     console.log(await AsyncStorage.getItem('accessToken'))
-    this.props.navigation.navigate("HomeScreen")
   }
 
   handleTypechosen = () => {
@@ -176,78 +211,86 @@ export default class SignInScreen extends Component {
               </View>
               : null}
           </View>
-          <View style={{ marginStart: '20%', marginTop: '15%' }} >
-            <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold' }} >I am</Text>
+          <View>
+            {
+              this.state.showType ?
+                <View>
+                  <View style={{ marginStart: '20%', marginTop: '15%' }} >
+                    <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold' }} >I am</Text>
+                  </View>
+                  <View
+                    style={[
+                      styles.buttons,
+                    ], { flex: 1, justifyContent: 'center', flexDirection: 'row', marginTop: 10 }}
+                  >
+                    <TouchableOpacity
+                      style={[
+                        styles.button,
+                        {
+                          backgroundColor: this.state.Contractor ? "#ffffff" : "#EBEBEB",
+                          elevation: this.state.Contractor ? 2 : 0
+                        },
+                      ]}
+                      onPress={this.handleTypechosen}
+                    >
+                      <Text style={{ color: this.state.Contractor ? '#76C662' : "#000000" }}>Contractor</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.button,
+                        { backgroundColor: this.state.SuperVisor ? "#ffffff" : "#EBEBEB", elevation: this.state.SuperVisor ? 2 : 0 },
+                      ]}
+                      onPress={this.handleTypechosen}
+                    >
+                      <Text style={{ color: this.state.SuperVisor ? '#76C662' : "#000000" }}>Supervisor</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  {this.state.Contractor ?
+                    <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 5 }} >
+                      <Text style={{ color: '#353535', fontSize: 14, fontStyle: 'normal', maxWidth: '60%', opacity: 0.5 }} >Contractor is a person who owns the firm.</Text>
+                    </View>
+                    :
+                    <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 5 }} >
+                      <Text style={{ color: '#353535', fontSize: 14, fontStyle: 'normal', maxWidth: '60%', opacity: 0.5 }} >Supervisor is the person who works under the contractor.</Text>
+                    </View>
+                  }
+                  {
+                    this.state.SuperVisor ?
+                      <View style={styles.containerRecatnglePhone}>
+                        <View style={styles.rect3} >
+                          <TextInput style={styles.textInputPhone}
+                            onChangeText={(number) => this.setState({ supervisorNumber: number })}
+                            keyboardType="numeric"
+                            maxLength={10}
+                            placeholder="9839xxxxxx"
+                          />
+                          <TouchableOpacity
+                            style={styles.eyeIcon}
+                            disable={true}
+                          >
+                            <Text style={{ color: 'grey', marginRight: 10 }} onPress={this.signUp} >Contractor's Phone</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View> :
+                      null
+                  }
+                </View>
+                : null
+            }
           </View>
-          <View
-            style={[
-              styles.buttons,
-            ], { flex: 1, justifyContent: 'center', flexDirection: 'row', marginTop: 10 }}
-          >
-            <TouchableOpacity
-              style={[
-                styles.button,
-                {
-                  backgroundColor: this.state.Contractor ? "#ffffff" : "#EBEBEB",
-                  elevation: this.state.Contractor ? 2 : 0
-                },
-              ]}
-              onPress={this.handleTypechosen}
-            >
-              <Text style={{ color: this.state.Contractor ? '#76C662' : "#000000" }}>Contractor</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                { backgroundColor: this.state.SuperVisor ? "#ffffff" : "#EBEBEB", elevation: this.state.SuperVisor ? 2 : 0 },
-              ]}
-              onPress={this.handleTypechosen}
-            >
-              <Text style={{ color: this.state.SuperVisor ? '#76C662' : "#000000" }}>Supervisor</Text>
-            </TouchableOpacity>
-          </View>
-          {
-            this.state.Contractor ?
-              <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 5 }} >
-                <Text style={{ color: '#353535', fontSize: 14, fontStyle: 'normal', maxWidth: '60%', opacity: 0.5 }} >Contractor is a person who owns the firm.</Text>
-              </View>
-              :
-              <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop:5 }} >
-                <Text style={{ color: '#353535', fontSize: 14, fontStyle: 'normal', maxWidth: '60%', opacity: 0.5 }} >Supervisor is the person who works under the contractor.</Text>
-            </View>
-          }
-          {
-            this.state.SuperVisor?
-            <View style={styles.containerRecatnglePhone}>
-            <View style={styles.rect3} >
-              <TextInput style={styles.textInputPhone}
-                onChangeText={(number) => this.setState({ phoneNumber: number })}
-                keyboardType="numeric"
-                maxLength={10}
-                placeholder="9839xxxxxx"
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                disable={true}
-              >
-                <Text style={{ color: 'grey', marginRight: 10 }} onPress={this.signUp} >Contractor's Phone</Text>
-              </TouchableOpacity>
-            </View>
-          </View> :
-          null
-          }
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity onPress={this.confirmSignup} >
-            <View >
-              <View style={styles.icon1Stack}>
-                <FeatherIcon name="arrow-right" style={styles.icon1}></FeatherIcon>
-                <View style={styles.rect4}>
-                  <FeatherIcon name="arrow-right" style={styles.icon2}></FeatherIcon>
+          <View style={styles.bottomContainer}>
+            <TouchableOpacity onPress={this.confirmSignup} >
+              <View >
+                <View style={styles.icon1Stack}>
+                  <FeatherIcon name="arrow-right" style={styles.icon1}></FeatherIcon>
+                  <View style={styles.rect4}>
+                    <FeatherIcon name="arrow-right" style={styles.icon2}></FeatherIcon>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView >
     );

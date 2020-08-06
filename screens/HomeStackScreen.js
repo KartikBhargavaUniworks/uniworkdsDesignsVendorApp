@@ -26,7 +26,6 @@ const HomeStackScreen = () => (
     <HomeStack.Navigator headerMode='none'>
         <HomeStack.Screen name="Login" component={Login}  />
         <HomeStack.Screen name="HomeScreen" component={HomeTabScreen}/>
-        <HomeStack.Screen name="Show Modal Screen" component={HomeScreen} />
         <HomeStack.Screen name="AfterAcceptScreen" component={AfterAcceptScreen}/>
         <HomeStack.Screen name="SiteRequestScreen" component={SiteRequestScreen}/>
         <HomeStack.Screen name="After Reaching Site" component={UpcomingTaskScreen} /> 
