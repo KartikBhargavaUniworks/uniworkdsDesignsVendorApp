@@ -3,7 +3,11 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FeatherIcon from "react-native-vector-icons/Feather";
 
-const RecoverAccountScreen = ({ navigation }) => {
+class RecoverAccountScreen extends React.Component  {
+    constructor(props){
+        super(props)
+    }
+    render(){
     return (
         <View style={styles.mainContainer}>
             <View style={{ alignItems: 'center', marginTop: 72 }}>
@@ -17,13 +21,8 @@ const RecoverAccountScreen = ({ navigation }) => {
                     <Text style={{ color: 'black', marginTop: 15, marginRight: 10, fontSize: 15 }} >Phone</Text>
                 </View>
             </View>
-            <Text style={{ marginTop: '20%', marginLeft: '15%', fontSize: 18 }} >Security Questions?</Text>
-            <View style={{ borderBottomWidth: 1, marginLeft: '15%', maxWidth: '70%', flexDirection: 'row', marginTop: 5 }} >
-                <TextInput placeholder='Type Here' style={styles.textInputAnswer} />
-                <MaterialIcons name='edit' style={{ color: 'grey', marginTop: 15, fontSize: 15 }} />
-            </View>
             <View style={styles.bottomContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('New Password')} >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('New Password')} >
                     <View >
                         <View style={styles.icon1Stack}>
                             <View style={styles.rect4}>
@@ -35,6 +34,7 @@ const RecoverAccountScreen = ({ navigation }) => {
             </View>
         </View>
     )
+}
 }
 
 const styles = StyleSheet.create({
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         maxWidth: '90%'
     },
     bottomContainer: {
-        top: '10%',
+        top: '40%',
         alignItems: 'center',
         justifyContent: 'flex-end',
     },

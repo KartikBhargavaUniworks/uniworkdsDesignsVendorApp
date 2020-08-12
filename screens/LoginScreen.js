@@ -29,7 +29,6 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
   }
 
   const login =async ()=> {
-    console.log(data)
     try {
     const result = await fetch('https://uniworksvendorapis.herokuapp.com/auth/login', {
       method: 'POST',
@@ -41,10 +40,15 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
         Username: "+91" + data.phoneNumber,
         Password: data.password
       })
-    }).then(response=> response.json())
-    .then(json=>saveTokenandNavigate(json))
+    }).then((response)=> {
+      return ( response.json()
+    )})
+    .then((json)=>
+      { 
+       saveTokenandNavigate((((json.accessToken))))
+    })
     .catch(e=>console.log(e.toString()))
-    navigation.navigate('HomeScreen')
+    
   } catch (e) {
     console.log(e)
   }
@@ -52,7 +56,8 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
 
 const saveTokenandNavigate = async (val) => {
   await AsyncStorage.setItem('accessToken', val)
-  console.log(await AsyncStorage.getItem('accessToken'))
+  await AsyncStorage.setItem("contact", "+91"+data.phoneNumber )
+  navigation.navigate('HomeScreen')
 }
 
   return (

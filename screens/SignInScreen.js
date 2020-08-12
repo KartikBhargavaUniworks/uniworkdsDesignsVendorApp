@@ -26,7 +26,8 @@ export default class SignInScreen extends Component {
       SuperVisor: false,
       confirmSignUp: true,
       showType: false,
-      supervisorNumber: ""
+      supervisorNumber: "",
+      userNameSql:""
     }
   }
 
@@ -37,6 +38,9 @@ export default class SignInScreen extends Component {
 
 
   signUp = async () => {
+    console.log(this.state)
+    var user = this.state.userName.substring(0,3).concat(new Date().getTime()) 
+    console.log(user)
     try {
       const result = await fetch('https://uniworksvendorapis.herokuapp.com/auth/register', {
         method: 'POST',
@@ -45,13 +49,15 @@ export default class SignInScreen extends Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          Username: this.state.userName.toLowerCase(),
-          Phone_number: "+91" + this.state.phoneNumber,
-          Password: this.state.password
+          Username: "+91" + this.state.phoneNumber,
+          Password: this.state.password,
+          name: this.state.userName,
+          userName:user
         })
       })
       let respone = await result.json()
       console.log(respone)
+      await AsyncStorage.setItem("userNameSql", this.state.userNameSql)
       this.setState({
         showOtp: true
       })
@@ -74,7 +80,7 @@ export default class SignInScreen extends Component {
   confirmSignup = async () => {
     var code = this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4 + this.state.otp5 + this.state.otp6
     console.log(code)
-    if (this.state.showType == false) {
+    
       try {
         const result = await fetch("https://uniworksvendorapis.herokuapp.com/auth/confirmSignup", {
           method: 'POST',
@@ -83,57 +89,25 @@ export default class SignInScreen extends Component {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            Username: this.state.userName,
+            Username: "+91" + this.state.phoneNumber,
             ConfirmationCode: code,
-            Password: this.state.password,
+            Password: this.state.password
           })
         }).then((response) => response.json())
           .then((json) => {
             this.saveTokenandNavigate(json)
           }
-
           )
       } catch (e) {
         console.log(e.toString())
       }
       this.setState({ showType: true, showOtp: false })
       console.log(this.state)
-    } else {
-      if (this.state.Contractor == true) {
-        const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/1", {
-          method: 'PUT',
-          headers: {
-            Accept: '*/*',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            role: 'CSVD'
-          })
-        }).catch(e => console.log(e.toString()))
-        this.props.navigation.navigate("Personal Details")
-      } else {
-        const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/1", {
-          method: 'PUT',
-          headers: {
-            Accept: '*/*',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            role: 'CSVR',
-            number: "+91".concat(this.state.supervisorNumber.toString()),
-          })
-        }).then(respone => respone.json())
-          .then(json => {
-            console.log(json)
-            this.props.navigation.navigate("Personal Details")
-          }).catch(e => console.log(e.toString()))
-      }
-    }
   }
   saveTokenandNavigate = async (val) => {
     await AsyncStorage.setItem('accessToken', val)
     await AsyncStorage.setItem('userName', this.state.userName)
-    console.log(await AsyncStorage.getItem('accessToken'))
+    await AsyncStorage.setItem('contact', this.state.phoneNumber)
   }
 
   handleTypechosen = () => {

@@ -6,14 +6,13 @@ import AfterAcceptScreen from './AfterAcceptScreen'
 import RootStackScreen from './RootStackScreen';
 import UpcomingTaskScreen from './UpcomingTaskScreen';
 import HomeTabScreen from '../components/HomeBottomTab';
-import HomeScreen from './HomeScreen';
-import CameraComponent from './CameraScreen';
 import SiteRequestScreen from './SiteRequestScreen';
 import SelectSuperVisorScreen from './SelectSuperVisorScreen';
 import PersonalScreen from './settings/PersonalScreen';
 import SupervisorsScreen from './settings/SupervisorsScreen';
 import AccountDetailsScreen from './settings/AccountDetails';
 import SecurityScreen from './settings/SecurityScreen';
+import VideoScreen from './VideoScreen';
 const HomeStack = createStackNavigator();
 
 function Login(){
@@ -34,7 +33,8 @@ const HomeStackScreen = () => (
         <HomeStack.Screen name="PersonalScreen" component={PersonalScreen} /> 
         <HomeStack.Screen name="SuperVisorsScreen" component={SupervisorsScreen} />
         <HomeStack.Screen name="AccountDetailsScreen" component={AccountDetailsScreen} />
-        <HomeStack.Screen name="SecuirtyScreen" component={SecurityScreen} />   
+        <HomeStack.Screen name="SecuirtyScreen" component={SecurityScreen} />  
+        <HomeStack.Screen name="VideoScreen" component={VideoScreen} /> 
     </HomeStack.Navigator>
 );
 

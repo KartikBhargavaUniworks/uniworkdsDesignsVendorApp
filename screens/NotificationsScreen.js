@@ -6,78 +6,9 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Spinner from 'react-native-loading-spinner-overlay'
 
 const NotificationsScreen = ({ navigation }) => {
-    let dataSiteRequest = [
-        {
-            area: '45,982 Sqft',
-            date: '07/07/2020',
-            amount: '50,200'
-        },
-        {
-            area: '45,982 Sqft',
-            date: '08/07/2020',
-            amount: '50,200'
-        }
-    ]
-    let UpcomingTasks = [
-        {
-            bookingId: 'UWHYD000010401',
-            name: 'Guddu',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-        {
-            bookingId: 'UWHYD000010402',
-            name: 'Guddu',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-        {
-            bookingId: 'UWHYD000010403',
-            name: 'Guddu',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-        {
-            bookingId: 'UWHYD000010404',
-            name: 'Guddu',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-        {
-            bookingId: 'UWHYD000010405',
-            name: 'Guddu',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-        {
-            bookingId: 'UWHYD000010406',
-            name: 'Guddu',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-        {
-            bookingId: 'UWHYD000010407',
-            name: 'Guddu',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-        {
-            bookingId: 'UWHYD000010408',
-            name: 'Kartik',
-            Area: '45,982',
-            Address: '40101, Indu Fortune Fields,Gardenia, Kukatpally Housing,Board, Phase 13,Hyderabad,Telangana,India,Aisa',
-            Amount: '24,500'
-        },
-    ]
     const[siteRequests, setSiteRequests] = useState([]);
     const[supervisors, setSupervisors] = useState([]);
+    const[upcomingTasks, setUpcomingTasks] = useState([]);
     const[isLoading, setLoading] = useState(true);
     const fetchData = async ()=>{
         let result = await  fetch('https://uniworksvendorapis.herokuapp.com/notifications/1')
@@ -85,8 +16,9 @@ const NotificationsScreen = ({ navigation }) => {
             return response.json()
         })
         .then(json=>{
-            setSiteRequests(json.projects)
-            setSupervisors(json.users)
+            setSiteRequests(json.siterequests)
+            setSupervisors(json.supervisors)
+            setUpcomingTasks(json.restallprojects)
             setLoading(false)
         })
     }
@@ -105,6 +37,18 @@ const NotificationsScreen = ({ navigation }) => {
                 }}
             />
         );
+    }
+    const fetchSiteRequest=async () => {
+        let result = await fetch('https://uniworksvendorapis.herokuapp.com/siteRequest/1')
+          .then(response => {
+            return response.json()
+          })
+          .then(json => {
+              
+            navigation.navigate('SiteRequestScreen',{
+                json:json
+            })
+          })
     }
     const renderItem = ({ item }) => {
         return (
@@ -136,21 +80,22 @@ const NotificationsScreen = ({ navigation }) => {
             <View style={{ flex: 1 }} >
                 <TouchableOpacity onPress={() => navigation.navigate('UpcomingTaskScreen')} >
                     <View style={styles.contentBox} >
-                        <Text style={{ fontSize: 18 }} >Booking ID;{item.bookingId}</Text>
+                        <Text style={{ fontSize: 18 }} >Booking ID:{item.bookingId}</Text>
                     </View>
                     <View style={styles.contentBox} >
-                        <Text style={{ color: '#353535', fontSize: 18, fontWeight: 'bold' }} >{item.name} </Text>
+                        <Text style={{ color: '#353535', fontSize: 18, fontWeight: 'bold' }} >Kartik </Text>
                         <View style={{ flex: 1, flexDirection: 'row' }} />
-                        <Text style={{ color: '#353535', fontSize: 18 }} >{item.Area} Sqft</Text>
+                        <Text style={{ color: '#353535', fontSize: 18 }} >{item.totalarea} Sqft</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',
                         marginEnd: '5%',
-                        marginTop: '5%'
+                        marginTop: 15,
+                        marginBottom:10
                     }} >
-                        <Text  >{item.Address.substring(0, 20)}...</Text>
+                        <Text  >{item.address.substring(0, 20)}...</Text>
                         <View style={{ flex: 1, flexDirection: 'row' }} />
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center', bottom: 5 }} >₹ {item.Amount}</Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center', bottom: 5 }} >₹ {item.budget}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -159,7 +104,7 @@ const NotificationsScreen = ({ navigation }) => {
 
     const renderSiteRequest = ({ item }) => {
         return (
-            <TouchableOpacity onPress={() => navigation.navigate('SiteRequestScreen')} >
+            <TouchableOpacity onPress={fetchSiteRequest} >
                 <View style={styles.contentBox} >
                     <Text style={{ fontSize: 16 }} >Site Request</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }} />
@@ -220,16 +165,16 @@ const NotificationsScreen = ({ navigation }) => {
 
                     </View>
                 </View>
-                <View style={styles.mainContainer} >
+                <View style={{ marginTop: '4%',
+        marginHorizontal: '10%',
+        flex: 1}} >
                     <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 18 }} >Upcoming Tasks</Text>
-                    <Text style={{ marginTop: '5%', color: '#000000', fontSize: 18 }} >23/06/2020</Text>
-                    {/* <FlatList
-                        data={UpcomingTasks}
-                        style={{ marginStart: '5%', marginTop: '5%', maxHeight: '100%', flex: 1 }}
+                    <FlatList
+                        data={upcomingTasks}
+                        style={{  marginTop:15}}
                         keyExtractor={item => item.bookingId}
                         renderItem={renderUpcomingTasks}
-                        ItemSeparatorComponent={FlatListItemSeparator}
-                    /> */}
+                        />
                 </View>
             </View>
             }
@@ -265,7 +210,7 @@ const styles = StyleSheet.create({
     },
     contentBox: {
         flexDirection: 'row',
-        marginTop: '5%',
+        marginTop: 15,
         marginEnd: '5%',
     },
     filler: {

@@ -4,9 +4,9 @@ import { TextInput, TouchableOpacity} from 'react-native-gesture-handler'
 import { Text } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import OTP from '../../components/OTP'
-import MapView, { Marker } from 'react-native-maps';
 
 class PersonalScreen extends React.Component{
+  
     constructor(props) {
         super(props)
         this.state = {
@@ -26,6 +26,16 @@ class PersonalScreen extends React.Component{
           SuperVisor: false,
           confirmSignUp: true,
           showType: false,
+          personalData:this.props.route.params,
+          email:'',
+          emergencyNumber:'',
+          category:'',
+          state:'',
+          city:'',
+          area:'',
+          street:'',
+          building:'',
+          flatNo:'',
         }
       }
       saveOtp = (val1, val2, val3, val4, val5, val6) => {
@@ -61,6 +71,90 @@ class PersonalScreen extends React.Component{
         //   console.log(e)
         // }
       }
+     handleSubmit = async () =>{
+       let uploadData={
+        userName:'Kar0711',
+        contact: "+918318006807",
+        emergencyContact:'',
+        email:'',
+        state:'',
+        city:'',
+        area:'',
+        street:'',
+        building:'',
+        flat:''
+       }
+       if(this.state.emergencyNumber!=''){
+         uploadData.emergencyContact = this.state.emergencyNumber
+       } else {
+         uploadData.emergencyContact = this.state.personalData.personal.emergencyContact
+       }
+       if(this.state.email!=''){
+        uploadData.email = this.state.email
+      } else {
+        uploadData.email = this.state.personalData.personal.email
+      }
+      if(this.state.state!=''){
+        uploadData.state = this.state.state
+      } else {
+        uploadData.state = this.state.personalData.personal.state
+      }
+      if(this.state.city!=''){
+        uploadData.city = this.state.city
+      } else {
+        uploadData.city = this.state.personalData.personal.city
+      }
+      if(this.state.area!=''){
+        uploadData.area = this.state.area
+      } else {
+        uploadData.area = this.state.personalData.personal.area
+      }
+      if(this.state.street!=''){
+        uploadData.street = this.state.street
+      } else {
+        uploadData.street = this.state.personalData.personal.street
+      }
+      if(this.state.building!=''){
+        uploadData.building = this.state.building
+      } else {
+        uploadData.building = this.state.personalData.personal.building
+      }
+      if(this.state.flat!=''){
+        uploadData.flat = this.state.flatNo
+      } else {
+        uploadData.flat = this.state.personalData.personal.flat
+      }
+
+        try {
+          const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/+918318006807", {
+            method: 'PUT',
+            headers: {
+              Accept: '*/*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              userName:'Kar0711',
+        contact: "+918318006807",
+        emergencyContact:uploadData.emergencyContact,
+        email:uploadData.email,
+        state:uploadData.state,
+        city:uploadData.city,
+        area:uploadData.area,
+        street:uploadData.street,
+        building:uploadData.building,
+        flat:uploadData.flat
+            })
+          }).then((response)=>{
+            const statusCode = response.status
+            return response.json();
+          }).then(json=>{
+            this.props.navigation.navigate('HomeScreen')
+            console.log(json)})
+          .catch(e=>console.log(e.toString()))
+        }catch(e){
+          console.log(e)
+        }
+      }
    mapStyle = [{ "elementType": "geometry", "stylers": [{ "color": "#242f3e" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#746855" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#242f3e" }] }, { "featureType": "administrative.locality", "elementType": "labels.text.fill", "stylers": [{ "color": "#d59563" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#d59563" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#263c3f" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#6b9a76" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#38414e" }] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [{ "color": "#212a37" }] }, { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#9ca5b3" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#746855" }] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{ "color": "#1f2835" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#f3d19c" }] }, { "featureType": "transit", "elementType": "geometry", "stylers": [{ "color": "#2f3948" }] }, { "featureType": "transit.station", "elementType": "labels.text.fill", "stylers": [{ "color": "#d59563" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#17263c" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#515c6d" }] }, { "featureType": "water", "elementType": "labels.text.stroke", "stylers": [{ "color": "#17263c" }] }];
 
     render(){
@@ -77,7 +171,7 @@ class PersonalScreen extends React.Component{
                 onChangeText={(number) => this.setState({ phoneNumber: number })}
                 keyboardType="numeric"
                 maxLength={10}
-                placeholder="9839xxxxxx"
+                placeholder={this.state.personalData.personal.contact}
               />
               <TouchableOpacity
                 style={styles.eyeIcon}
@@ -104,8 +198,8 @@ class PersonalScreen extends React.Component{
         <View style={styles.containerRecatngleName}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="98393xxxx"
-            onChangeText={(number)=>setdataEmergencyNumber({Name:"custom:emergencyNumber", Value:number})}
+            placeholder={this.state.personalData.personal.emergencyContact}
+            onChangeText={(number)=>this.setState({emergencyNumber:number})}
           />
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Emergency Contact</Text>
           </View>
@@ -113,19 +207,17 @@ class PersonalScreen extends React.Component{
         <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="Email"
-            onChangeText={(email)=>setdataEmail({Name:"custom:email", Value:email})}
+            placeholder={this.state.personalData.personal.email}
+            onChangeText={(email)=>this.setState({email:email})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Category</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Email</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
             placeholder="Carpenter"
-            onChangeText={(category)=>setdataCategory({
-              Name:"custom:category",
-              Value:category})}/>
+            onChangeText={(category)=>this.setState({category:category})}/>
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Category</Text>
           </View>
         </View>
@@ -135,11 +227,8 @@ class PersonalScreen extends React.Component{
        <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="Telangana"
-            onChangeText={(state)=>setdataState({
-              Name:"custom:state",
-              Value:state
-            })}
+            placeholder={this.state.personalData.personal.state}
+            onChangeText={(state)=>this.setState({state:state})}
           />
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >State</Text>
           </View>
@@ -147,11 +236,8 @@ class PersonalScreen extends React.Component{
         <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="Hyderabad"
-            onChangeText={(city)=>setdataCity({
-              Name:"custom:city",
-              Value:city
-            })}
+            placeholder={this.state.personalData.personal.city}
+            onChangeText={(city)=>this.setState({city:city})}
           />
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >City</Text>
           </View>
@@ -159,11 +245,8 @@ class PersonalScreen extends React.Component{
         <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="Kavuri Hills"
-            onChangeText={(area)=>setdataArea({
-              Name:"custom:area",
-              Value:area
-            })}
+            placeholder={this.state.personalData.personal.area}
+            onChangeText={(area)=>this.setState({area:area})}
           />
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Area</Text>
           </View>
@@ -171,11 +254,8 @@ class PersonalScreen extends React.Component{
         <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="Jon Snow"
-            onChangeText={(street)=>setdataStreet({
-              Name:"custom:street",
-              Value:street
-            })}
+            placeholder={this.state.personalData.personal.street}
+            onChangeText={(street)=>this.setState({street:street})}
           />
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Street</Text>
           </View>
@@ -183,11 +263,8 @@ class PersonalScreen extends React.Component{
         <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="Lamba Trendz Uniworks"
-            onChangeText={(building)=>setdataBuilding({
-              Name:"custom:building",
-              Value:building
-            })}
+            placeholder={this.state.personalData.personal.building}
+            onChangeText={(building)=>this.setState({building:building})}
           />
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Building</Text>
           </View>
@@ -195,11 +272,8 @@ class PersonalScreen extends React.Component{
         <View style={styles.containerRecatngle}>
           <View style= {styles.rect3} >
           <TextInput style = {styles.textInputPhone}
-            placeholder="2nd Floor"
-            onChangeText={(flatNo)=>setdatasetFlatNo({
-              Name:"custom:flatNo",
-              Value:flatNo
-            })}
+            placeholder={this.state.personalData.personal.flat}
+            onChangeText={(flatNo)=>this.setState({flatNo:flatNo})}
           />
           <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Flat No.</Text>
           </View>
@@ -224,7 +298,7 @@ class PersonalScreen extends React.Component{
           description={"just for testing"} />
       </MapView> */}
 
-        <TouchableOpacity style = {styles.SubmitButtonStyle}  >
+        <TouchableOpacity style = {styles.SubmitButtonStyle} onPress={this.handleSubmit} >
             <Text style = {{ fontSize:20 , top:13, color:'#ffffff'}}  >Proceed</Text>
         </TouchableOpacity>
       </View>

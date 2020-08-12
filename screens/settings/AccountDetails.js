@@ -1,92 +1,119 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, AsyncStorage, } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather'
 
 function AccountDetailsScreen(props) {
-  const [dataAccountNumber, setdataAccountNumber] = useState({
-    Name: "custom:AccountNumber",
-    Value: ""
-  })
-  const [dataConfirmAccountNumber, setdataConfirmAccountNumber] = useState({
-    Name: "custom:category",
-    Value: ""
-  })
-  const [dataIFSCCODE, setdataIFSCCODE] = useState({
-    Name: "custom:state",
-    Value: ""
-  })
-  const [dataAcountHolderName, setdataAccountHolderName] = useState({
-    Name: "custom:city",
-    Value: ""
-  })
-  const [dataPANNUmber, setdataPANNumber] = useState({
-    Name: "custom:area",
-    Value: ""
-  })
-  const [dataAadharDetails, setdataAadharDetails] = useState({
-    Name: "custom:street",
-    Value: ""
-  })
-  const [dataGst, setdataGst] = useState({
-    Name: "custom:gst",
-    Value: ""
+  const [fetchedData, setFetchedData] = useState(props.route.params)
+  const [data, setData] = useState({
+    accountNum: '',
+    confirmAccoutNum: '',
+    IFSC: '',
+    accountHolder: '',
+    PAN: '',
+    aadharlink: '',
+    GSTIN: '',
+    confirmAccoutnNo: ''
   })
   const handleSubmission = async () => {
-    let photo = await AsyncStorage.getItem('AadhaarPhotoUri')
-    let Photo = {
-      Name: "custom:aadharUri",
-      Value: photo
+    let uploadData = {
+      accountNum: '',
+      IFSC: '',
+      accountHolder: '',
+      PAN: '',
+      aadharlink: '',
+      GSTIN: ''
     }
-    console.log(photo)
-    let Array = []
-    Array.push(dataAccountNumber)
-    Array.push(dataIFSCCODE)
-    Array.push(dataAcountHolderName)
-    Array.push(dataPANNUmber)
-    Array.push(dataAadharDetails)
-    Array.push(Photo)
+    if (data.GSTIN != '') {
+      uploadData.GSTIN = data.GSTIN
+    } else {
+      uploadData.GSTIN = fetchedData.personal.GSTIN
+    }
+    if (data.accountNum != '' && data.confirmAccoutNum != '' && data.confirmAccoutNum == data.accountNum) {
+      uploadData.accountNum = data.accountNum
+    } else {
+      uploadData.accountNum = fetchedData.personal.accountNum
+    }
+    if (data.IFSC != '') {
+      uploadData.IFSC = data.IFSC
+    } else {
+      uploadData.IFSC = fetchedData.personal.IFSC
+    }
+    if (data.accountHolder != '') {
+      uploadData.accountHolder = data.accountHolder
+    } else {
+      uploadData.accountHolder = fetchedData.personal.accountHolder
+    }
+    if (data.PAN != '') {
+      uploadData.PAN = data.PAN
+    } else {
+      uploadData.PAN = fetchedData.personal.PAN
+    }
+    if (data.aadharlink != '') {
+      uploadData.aadharlink = data.aadharlink
+    } else {
+      uploadData.aadharlink = fetchedData.personal.aadharlink
+    }
+    let contact = await AsyncStorage.getItem('contact')
+    console.log(JSON.stringify({
+      userName: 'Kar0711',
+      contact: contact,
+      accountNum: uploadData.accountNum,
+      IFSC: uploadData.IFSC,
+      accountHolder: uploadData.accountHolder,
+      PAN: uploadData.PAN,
+      aadharlink: uploadData.aadharlink,
+      GSTIN: uploadData.GSTIN
+    }))
     try {
-      let accessToken = await AsyncStorage.getItem('accessToken')
-      let userName = await AsyncStorage.getItem('userName')
-      const result = await fetch("https://still-plains-75686.herokuapp.com/user/updateUserAttributes", {
+      
+      const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/"+contact, {
         method: 'PUT',
         headers: {
-          authorization: accessToken
+          Accept: '*/*',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          UserName: userName,
-          UserAttributes: Array
+          userName: 'Kar0711',
+          contact: contact,
+          accountNum: uploadData.accountNum,
+          IFSC: uploadData.IFSC,
+          accountHolder: uploadData.accountHolder,
+          PAN: uploadData.PAN,
+          aadharlink: uploadData.aadharlink,
+          GSTIN: uploadData.GSTIN
         })
       }).then((response) => {
         const statusCode = response.status
         console.log(statusCode)
+        return response.json()
+
+      }).then(json => {
+        props.navigation.navigate("HomeScreen");
+        console.log(json)
       })
-      props.navigation.navigate("Payment Details");
+        .catch(e => alert(e.toString()))
     } catch (e) {
       console.log(e)
     }
-  }
-  const handleUrl = () => {
-    const state = props.navigation
-    console.log(state.params.photo)
+    // 
   }
 
   return (
     <ScrollView   >
-      <View style={styles.mainContainer} >  
-        <TouchableOpacity style={{ flexDirection:'row', marginTop:50, marginStart:'10%' }} >
-                <MaterialIcons name='credit-card' size={32} />
-                <Text style={{ alignSelf: 'center', color: '#353535', fontSize: 24, marginStart:10 }}>Account Details</Text>
-            </TouchableOpacity>
+      <View style={styles.mainContainer} >
+        <TouchableOpacity style={{ flexDirection: 'row', marginTop: 50, marginStart: '10%' }} >
+          <MaterialIcons name='credit-card' size={32} />
+          <Text style={{ alignSelf: 'center', color: '#353535', fontSize: 24, marginStart: 10 }}>Account Details</Text>
+        </TouchableOpacity>
         <View style={styles.containerRecatngleName}>
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
+              placeholder={fetchedData.personal.accountNum}
               onChangeText={(accoutnNo) => {
-                setdataAccountNumber({
-                  Name: "custom:AccountNumber",
-                  Value: accoutnNo
+                setData({
+                  ...data,
+                  accountNum: accoutnNo
                 })
               }}
             />
@@ -96,10 +123,11 @@ function AccountDetailsScreen(props) {
         <View style={styles.containerRecatngleName}>
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
+              placeholder={fetchedData.personal.accountNum}
               onChangeText={(confirmAccoutnNo) => {
-                setdataConfirmAccountNumber({
-                  Name: "custom:Confirm",
-                  Value: confirmAccoutnNo
+                setData({
+                  ...data,
+                  confirmAccoutNum: confirmAccoutnNo
                 })
               }}
             />
@@ -109,10 +137,11 @@ function AccountDetailsScreen(props) {
         <View style={styles.containerRecatngleName}>
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
+              placeholder={fetchedData.personal.IFSC}
               onChangeText={(ifscCode) => {
-                setdataIFSCCODE({
-                  Name: "custom:ifsc",
-                  Value: ifscCode
+                setData({
+                  ...data,
+                  IFSC: ifscCode
                 })
               }}
             />
@@ -122,10 +151,11 @@ function AccountDetailsScreen(props) {
         <View style={styles.containerRecatngleName}>
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
+              placeholder={fetchedData.personal.accountHolder}
               onChangeText={(name) => {
-                setdataAccountHolderName({
-                  Name: "custom:accountHolderName",
-                  Value: name
+                setData({
+                  ...data,
+                  accountHolder: name
                 })
               }}
             />
@@ -135,10 +165,11 @@ function AccountDetailsScreen(props) {
         <View style={styles.containerRecatngleName}>
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
+              placeholder={fetchedData.personal.PAN}
               onChangeText={(pan) => {
-                setdataPANNumber({
-                  Name: "custom:pan",
-                  Value: pan
+                setData({
+                  ...data,
+                  PAN: pan
                 })
               }}
             />
@@ -148,10 +179,11 @@ function AccountDetailsScreen(props) {
         <View style={styles.containerRecatngleName}>
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
+              placeholder={fetchedData.personal.aadharLink}
               onChangeText={(aadhar) => {
-                setdataAadharDetails({
-                  Name: "custom:aadhar",
-                  Value: aadhar
+                setData({
+                  ...data,
+                  aadharlink: aadhar
                 })
               }}
             />
@@ -170,10 +202,11 @@ function AccountDetailsScreen(props) {
         <View style={styles.containerRecatngleName}>
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
+              placeholder={fetchedData.personal.GSTIN}
               onChangeText={(gst) => {
-                setdataGst({
-                  Name: "custom:gst",
-                  Value: gst
+                setData({
+                  ...data,
+                  GSTIN: gst
                 })
               }}
             />

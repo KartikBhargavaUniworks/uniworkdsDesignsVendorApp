@@ -7,7 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import images from '../assets/images'
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const SiteRequestScreen = ({ navigation: { navigate, goBack } }) => {
+const SiteRequestScreen = ({ navigation, route }) => {
   const onRegionChange =(region)=> {
     this.setState({ region });
   }
@@ -20,13 +20,6 @@ const SiteRequestScreen = ({ navigation: { navigate, goBack } }) => {
     images.welcom3Image,
     images.welcom4Image,
   ]
-  var data = {
-    descriptionText: 'Prepare the wall by Making & Chipping (wall choosing). Installation by Pipe installation & Waterproofing Testing by pressure & leakge testing.Finishing by Filling the condult with mortar . Hacking the finish for bonding.Fixing mesh on the closed conduits'
-  }
-  const dates = {
-    dateFrom: '24/05/2020',
-    dateTo: '28/04/2020'
-  }
   const Timing = {
     timingFrom: '9:30',
     timingTo: '18:30'
@@ -37,28 +30,18 @@ const SiteRequestScreen = ({ navigation: { navigate, goBack } }) => {
 
   const [plans, setPlans] = useState([]);
   const [project, setProject] = useState([])
-  const[isLoading, setLoading] = useState(true);
-  let tools = ['Pen/Pencil', 'Measuring Tape', 'Screwdrivers', 'Cuttinpliers/ Nail Picker', 'Drilling machine and drill bits']
   const renderTools = ({ item }) => {
     return (
-      <Text style={{ marginLeft: '20%', marginTop: '5%' }} >-{item} </Text>
+      <Text style={{ marginLeft: '20%', marginTop: '5%' }} >-{item.toolName} </Text>
     )
   }
-  const fetchData = async () => {
-    let result = await fetch('https://uniworksvendorapis.herokuapp.com/siteRequest/1')
-      .then(response => {
-        return response.json()
-      })
-      .then(json => {
-        console.log(json.project.Category.categoryName)
-        setPlans(json.plans)
-        setProject(json.project)
-        setLoading(false)
-      })
-  }
+
   useEffect(() => {
-    console.log('trigger use effect hook');
-    fetchData()
+    
+    const {json} = route.params
+    console.log(json)
+    setPlans(json.plans)
+        setProject(json.project)
   }, []);
   const renderImages = ({ item }) => {
     return (
@@ -73,16 +56,16 @@ const SiteRequestScreen = ({ navigation: { navigate, goBack } }) => {
   return (
     <ScrollView >
      {
-       isLoading?
-       <Spinner
-            //visibility of Overlay Loading Spinner
-            visible={isLoading}
-            //Text with the Spinner
-            textContent={'Loading...'}
-            //Text style of the Spinner Text
-            textStyle={{color: '#FFF',}}
-          />
-       :
+      
+      //  <Spinner
+      //       //visibility of Overlay Loading Spinner
+      //       visible={isLoading}
+      //       //Text with the Spinner
+      //       textContent={'Loading...'}
+      //       //Text style of the Spinner Text
+      //       textStyle={{color: '#FFF',}}
+      //     />
+       
        <View style={styles.mainContainer} >
        <Text style={{ color: '#909090', fontSize: 30, alignSelf: 'center' }} >{project.Category.categoryName}</Text>
        <Text style={{ color: '#909090', fontSize: 18, alignSelf: 'center', opacity: 0.5 }} >{project.SubCategory.subcategoryName}</Text>
@@ -169,7 +152,7 @@ const SiteRequestScreen = ({ navigation: { navigate, goBack } }) => {
          <View style={{ flex: 1 }} >
            <Text style={styles.TypeStyle, { top: 25, fontSize: 20, marginLeft: '15%', marginBottom: 30 }} >Tools</Text>
            <FlatList
-             data={tools}
+             data={project.SubCategory.tools}
              renderItem={renderTools}
            />
          </View>
@@ -201,11 +184,11 @@ const SiteRequestScreen = ({ navigation: { navigate, goBack } }) => {
         <Text style={{ fontSize: 36 }} >₹ {project.budget}</Text>
          </View>
          <View style={{ flexDirection: 'row', marginTop: 50, marginHorizontal: '10%' }} >
-           <TouchableOpacity onPress={() => navigate('SelectSupervisorScreen')} >
+           <TouchableOpacity onPress={() => navigation.navigate('SelectSupervisorScreen')} >
              <Text style={{ fontSize: 24, color: '#93D152', fontWeight: 'bold' }}>Confirm</Text>
            </TouchableOpacity >
            <View style={{ flex: 1, flexDirection: 'row' }} />
-           <TouchableOpacity onPress={() => goBack()} >
+           <TouchableOpacity onPress={() => navigation.goBack()} >
              <Text style={{ fontSize: 24, color: '#FF0000', fontWeight: 'bold' }}>Cancel</Text>
            </TouchableOpacity >
          </View>
