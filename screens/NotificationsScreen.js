@@ -38,18 +38,6 @@ const NotificationsScreen = ({ navigation }) => {
             />
         );
     }
-    const fetchSiteRequest=async () => {
-        let result = await fetch('https://uniworksvendorapis.herokuapp.com/siteRequest/1')
-          .then(response => {
-            return response.json()
-          })
-          .then(json => {
-              
-            navigation.navigate('SiteRequestScreen',{
-                json:json
-            })
-          })
-    }
     const renderItem = ({ item }) => {
         return (
             <View style={{ backgroundColor: '#ffffff', flex: 1 }} >
@@ -104,7 +92,7 @@ const NotificationsScreen = ({ navigation }) => {
 
     const renderSiteRequest = ({ item }) => {
         return (
-            <TouchableOpacity onPress={fetchSiteRequest} >
+            <TouchableOpacity onPress={()=>navigation.navigate('SiteRequestScreen')} >
                 <View style={styles.contentBox} >
                     <Text style={{ fontSize: 16 }} >Site Request</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }} />

@@ -30,18 +30,25 @@ const SiteRequestScreen = ({ navigation, route }) => {
 
   const [plans, setPlans] = useState([]);
   const [project, setProject] = useState([])
+  const [isLoading, setLoading] = useState(true)
   const renderTools = ({ item }) => {
     return (
       <Text style={{ marginLeft: '20%', marginTop: '5%' }} >-{item.toolName} </Text>
     )
   }
-
-  useEffect(() => {
-    
-    const {json} = route.params
-    console.log(json)
-    setPlans(json.plans)
+  const fetchSiteRequest=async () => {
+    let result = await fetch('https://uniworksvendorapis.herokuapp.com/siteRequest/1')
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        setPlans(json.plans)
         setProject(json.project)
+        setLoading(false)
+      })
+}
+  useEffect(() => {
+     fetchSiteRequest()
   }, []);
   const renderImages = ({ item }) => {
     return (
@@ -56,16 +63,16 @@ const SiteRequestScreen = ({ navigation, route }) => {
   return (
     <ScrollView >
      {
-      
-      //  <Spinner
-      //       //visibility of Overlay Loading Spinner
-      //       visible={isLoading}
-      //       //Text with the Spinner
-      //       textContent={'Loading...'}
-      //       //Text style of the Spinner Text
-      //       textStyle={{color: '#FFF',}}
-      //     />
-       
+       isLoading?
+       <Spinner
+            //visibility of Overlay Loading Spinner
+            visible={isLoading}
+            //Text with the Spinner
+            textContent={'Loading...'}
+            //Text style of the Spinner Text
+            textStyle={{color: '#FFF',}}
+          />
+       :
        <View style={styles.mainContainer} >
        <Text style={{ color: '#909090', fontSize: 30, alignSelf: 'center' }} >{project.Category.categoryName}</Text>
        <Text style={{ color: '#909090', fontSize: 18, alignSelf: 'center', opacity: 0.5 }} >{project.SubCategory.subcategoryName}</Text>
