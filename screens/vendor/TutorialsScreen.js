@@ -3,20 +3,14 @@ import { View, Text, StyleSheet, AsyncStorage, Image } from 'react-native'
 import { TouchableOpacity, ScrollView, FlatList } from 'react-native-gesture-handler'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Spinner from 'react-native-loading-spinner-overlay'
-import images from '../assets/images'
+import images from '../../assets/images'
 
 const TutorialsScreen = ({ navigation }) => {
     const [showList, setShowList] = useState(false);
-    var Images = [
-        images.welcom1Image,
-        images.welcom2Image,
-        images.welcom3Image,
-        images.welcom4Image,
-      ]
     const [chosenName, setChosenName] = useState('Select Category')
     const [chosenSubCategory, setChosenSubCategory] = useState([])
     const [vendorPersonal, setVendorPersonal] = useState([])
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(false);
     const [categoryDetails, setCategoryDetails] = useState([]);
     const [showSubCategory, setShowSubCategory] = useState(false)
     const [prerequisite, setPreRequisite] = useState([])
@@ -24,26 +18,15 @@ const TutorialsScreen = ({ navigation }) => {
     const show = () => {
         setShowList(!showList)
         if (showList == true)
-            setChosenName('Supervisor Name')
+            setChosenName('Select Category')
     }
 
     const fetchData = async ()=>{
         let contact = await AsyncStorage.getItem('contact')
-        let result = await  fetch('https://uniworksvendorapis.herokuapp.com/vendor/'+contact)
-        .then(response=>{
-            return response.json()
-        })
-        .then(json=>{
-            setVendorPersonal(json.vendor)
-            saveDetails(json.vendor)
-            setCategoryDetails(json.categorydetails)
-            setLoading(false)
-        })
     }
     const saveDetails=async(val)=>{
        await AsyncStorage.setItem('userName', val.userName)
        await AsyncStorage.setItem('vendorId', JSON.stringify(val.id))
-       let double=JSON.parse(await AsyncStorage.getItem('vendorId'))
     }
     useEffect(()=> {
     fetchData()
@@ -59,11 +42,21 @@ const TutorialsScreen = ({ navigation }) => {
   }
     const renderNames = ({ item }) => {
         return (
-            <View style={{ marginStart: '5%', marginBottom: 20 }} >
+            <View style={{backgroundColor: "rgba(255,255,255,1)",
+            borderWidth: 1,
+            borderColor: "rgba(112,112,112,1)",
+            borderStyle: "solid",
+            borderRadius: 30,
+            paddingStart:18,
+            paddingEnd:18,
+            width:120,
+            marginStart:'14%'
+        }} >
                 <TouchableOpacity onPress={() => {
                     setChosenName(item.categoryName)
                     showSubcategories(item.id)
                     setShowList(!showList)
+                    setShowSubCategory(!showSubCategory)
                 }}>
                     <Text style={{ color: '#000000', fontSize: 16, fontWeight: 'bold' }} >{item.categoryName}</Text>
                 </TouchableOpacity>
@@ -129,8 +122,9 @@ const TutorialsScreen = ({ navigation }) => {
         return (
             <View
                 style={{
-                    height: 2,
+                    height: 20,
                     width: "100%",
+                    color:'#ffffff'
                 }}
             />
         );
@@ -195,7 +189,7 @@ const TutorialsScreen = ({ navigation }) => {
                     </TouchableOpacity>
                     {
                         showList ?
-                            <View style={{ flex: 1, marginTop: '5%', marginStart: '15%' }} >
+                            <View style={{ flex: 1, marginTop:10}} >
                                 <FlatList
                                     data={categoryDetails}
                                     renderItem={renderNames}
@@ -215,8 +209,8 @@ const TutorialsScreen = ({ navigation }) => {
                             </View>:
                             null
                    }
-                   <Text style={{ color:'#000000', fontSize:16, fontWeight:'bold', marginStart:'10%' }} >Prequisites & Checklist</Text>
-                   <View style={{marginTop:15}} >
+                   <Text style={{ color:'#000000', fontSize:16, fontWeight:'bold', marginStart:'10%', marginTop:20 }} >Prequisites & Checklist</Text>
+                   <View  >
                        <FlatList
                           data={prerequisite}
                           renderItem={renderPrerequisite}

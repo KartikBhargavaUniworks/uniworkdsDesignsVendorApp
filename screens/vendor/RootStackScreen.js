@@ -2,14 +2,14 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SplashScreen from './SplashScreen';
-import SignInScreen from './SignInScreen';
-import LoginScreen from './LoginScreen';
-import PersonalDetailsScreen from './PersonalDetailsScreen';
-import PaymentDetailsScreen from './PaymentDetailsScreen';
-import RecoverAccountScreen from './RecoverAccountScreen';
-import NewPassword from './NewPasswordScreen';
-import CameraComponent from './CameraScreen';
+import SplashScreen from '../common/SplashScreen';
+import SignInScreen from '../common/SignInScreen';
+import LoginScreen from '../common/LoginScreen';
+import PersonalDetailsScreen from '../common/PersonalDetailsScreen';
+import PaymentDetailsScreen from '../common/PaymentDetailsScreen';
+import RecoverAccountScreen from '../common/RecoverAccountScreen';
+import NewPassword from '../common/NewPasswordScreen';
+import CameraComponent from '../common/CameraScreen';
 
 const RootStack = createStackNavigator();
 

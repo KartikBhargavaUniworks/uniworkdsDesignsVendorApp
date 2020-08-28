@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, AsyncStorage, Dimensions, } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import { ScrollView } from "react-native-gesture-handler";
-import OTP from "../components/OTP";
+import OTP from "../../components/OTP";
 import FeatherIcon from "react-native-vector-icons/Feather";
 
 export default class SignInScreen extends Component {

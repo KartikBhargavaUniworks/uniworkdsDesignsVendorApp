@@ -2,17 +2,17 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import AfterAcceptScreen from './AfterAcceptScreen'
-import RootStackScreen from './RootStackScreen';
-import UpcomingTaskScreen from './UpcomingTaskScreen';
-import HomeTabScreen from '../components/HomeBottomTab';
-import SiteRequestScreen from './SiteRequestScreen';
-import SelectSuperVisorScreen from './SelectSuperVisorScreen';
-import PersonalScreen from './settings/PersonalScreen';
-import SupervisorsScreen from './settings/SupervisorsScreen';
-import AccountDetailsScreen from './settings/AccountDetails';
-import SecurityScreen from './settings/SecurityScreen';
+import AfterAcceptScreen from '../vendor/AfterAcceptScreen'
+import RootStackScreen from '../vendor/RootStackScreen';
+import UpcomingTaskScreen from '../vendor/UpcomingTaskScreen';
+import SiteRequestScreen from '../vendor/SiteRequestScreen';
+import SelectSuperVisorScreen from '../vendor/SelectSuperVisorScreen';
+import PersonalScreen from '../settings/PersonalScreen';
+import SupervisorsScreen from '../settings/SupervisorsScreen';
+import AccountDetailsScreen from '../settings/AccountDetails';
+import SecurityScreen from '../settings/SecurityScreen';
 import VideoScreen from './VideoScreen';
+import HomeTabScreen from '../../components/HomeBottomTab';
 const HomeStack = createStackNavigator();
 
 function Login(){

@@ -7,13 +7,13 @@ function SplashScreen({navigation}) {
       style={styles.container}
     >
       <Image
-        source={require("../assets/images/green-plant-on-white-wooden-table-36447421.jpg")}
+        source={require("../../assets/images/green-plant-on-white-wooden-table-36447421.jpg")}
         resizeMode="contain"
         style={styles.image2}
       ></Image> 
       <TouchableOpacity
         style={styles.button}
-        onPress = {() => navigation.navigate('SignInScreen')}
+        onPress = {() => navigation.navigate('HomeScreen')}
       >
         <View style = {styles.containerButton} >
         <Text styles ={styles.text} >Get Started</Text>

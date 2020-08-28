@@ -6,34 +6,34 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Spinner from 'react-native-loading-spinner-overlay'
 
 const NotificationsScreen = ({ navigation }) => {
-    const[siteRequests, setSiteRequests] = useState([]);
-    const[supervisors, setSupervisors] = useState([]);
-    const[upcomingTasks, setUpcomingTasks] = useState([]);
-    const[isLoading, setLoading] = useState(true);
-    const fetchData = async ()=>{
-        let result = await  fetch('https://uniworksvendorapis.herokuapp.com/notifications/1')
-        .then(response=>{
-            return response.json()
-        })
-        .then(json=>{
-            setSiteRequests(json.siterequests)
-            setSupervisors(json.supervisors)
-            setUpcomingTasks(json.restallprojects)
-            setLoading(false)
-        })
+    const [siteRequests, setSiteRequests] = useState([]);
+    const [supervisors, setSupervisors] = useState([]);
+    const [upcomingTasks, setUpcomingTasks] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+    const fetchData = async () => {
+        let result = await fetch('https://uniworksvendorapis.herokuapp.com/notifications/1')
+            .then(response => {
+                return response.json()
+            })
+            .then(json => {
+                setSiteRequests(json.siterequests)
+                setSupervisors(json.supervisors)
+                setUpcomingTasks(json.restallprojects)
+                setLoading(false)
+            })
     }
-    useEffect(()=> {
+    useEffect(() => {
         console.log('trigger use effect hook');
-    fetchData()
-  },[] );
-  
+        fetchData()
+    }, []);
+
     const FlatListItemSeparator = () => {
         return (
             <View
                 style={{
-                    height: 1,
+                    height: 20,
                     width: "100%",
-                    backgroundColor: "#000",
+                    backgroundColor: "#FFF",
                 }}
             />
         );
@@ -79,7 +79,7 @@ const NotificationsScreen = ({ navigation }) => {
                         flexDirection: 'row',
                         marginEnd: '5%',
                         marginTop: 15,
-                        marginBottom:10
+                        marginBottom: 10
                     }} >
                         <Text  >{item.address.substring(0, 20)}...</Text>
                         <View style={{ flex: 1, flexDirection: 'row' }} />
@@ -92,9 +92,9 @@ const NotificationsScreen = ({ navigation }) => {
 
     const renderSiteRequest = ({ item }) => {
         return (
-            <TouchableOpacity onPress={()=>navigation.navigate('SiteRequestScreen')} >
+            <TouchableOpacity onPress={() => navigation.navigate('SiteRequestScreen')} >
                 <View style={styles.contentBox} >
-                    <Text style={{ fontSize: 16 }} >Site Request</Text>
+                    <Text style={{ fontSize: 16, color: '#000000' }} >Site Request</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }} />
                     <TouchableOpacity>
                         <Entypo style={{ fontSize: 24, top: 4 }} name='cross' color='#E32626' />
@@ -104,67 +104,74 @@ const NotificationsScreen = ({ navigation }) => {
                 <View style={{
                     flexDirection: 'row',
                     marginEnd: '5%',
+                    marginBottom: 5
                 }} >
-                    <Text style={{ marginTop: '5%' }} >{item.startDate}</Text>
+                    <Text style={{ alignSelf: 'center' }} >{item.startDate}</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }} >₹ {item.budget}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }} >₹ {item.budget}</Text>
                 </View>
             </TouchableOpacity>
         )
     }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }} showsVerticalScrollIndicator={false}>
-            {isLoading? 
-            
-            <Spinner
-            //visibility of Overlay Loading Spinner
-            visible={isLoading}
-            //Text with the Spinner
-            textContent={'Loading...'}
-            //Text style of the Spinner Text
-            textStyle={{color: '#FFF',}}
-          />
-            :
-            
-            <View style={{ flex: 1 }} >
-                <Text style={{ alignSelf: 'center', marginTop: '10%', color: '#353535', fontSize: 24, fontWeight: 'bold', marginBottom: '5%' }} >Notifications</Text>
-                <View style={styles.rect3} >
-                    <TextInput
-                        placeholder='Search'
-                        style={styles.textInputPhone}
-                    />
-                    <View style={{ alignSelf: 'center', marginEnd: '2%' }}  >
-                        <TouchableOpacity  >
-                            <Feather name='search' size={24} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flex: 1 }} >
-                    <View style={styles.mainContainer} >
-                        <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 18 }} >Approvals</Text>
-                        <FlatList
-                            data={supervisors}
-                            renderItem={renderItem}
-                        />
-                        <FlatList
-                            data={siteRequests}
-                            renderItem={renderSiteRequest}
-                        />
+            {isLoading ?
 
+                <Spinner
+                    //visibility of Overlay Loading Spinner
+                    visible={isLoading}
+                    //Text with the Spinner
+                    textContent={'Loading...'}
+                    //Text style of the Spinner Text
+                    textStyle={{ color: '#FFF', }}
+                />
+                :
+
+                <View style={{ flex: 1 }} >
+                    <Text style={{ alignSelf: 'center', marginTop: '10%', color: '#353535', fontSize: 24, fontWeight: 'bold', marginBottom: '5%' }} >Notifications</Text>
+                    <View style={styles.rect3} >
+                        <TextInput
+                            placeholder='Search'
+                            style={styles.textInputPhone}
+                        />
+                        <View style={{ alignSelf: 'center', marginEnd: '2%' }}  >
+                            <TouchableOpacity  >
+                                <Feather name='search' size={24} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{ flex: 1 }} >
+                        <View style={styles.mainContainer} >
+                            <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 20, marginHorizontal: '7%', marginTop: 20 }} >Approvals</Text>
+                            <FlatList
+                                style={{ marginTop: 20, marginStart: '9%' }}
+                                data={supervisors}
+                                renderItem={renderItem}
+                                ItemSeparatorComponent={FlatListItemSeparator}
+                            />
+                            <FlatList
+                                style={{ marginTop: 30, marginStart: '9%' }}
+                                data={siteRequests}
+                                renderItem={renderSiteRequest}
+                                ItemSeparatorComponent={FlatListItemSeparator}
+                            />
+
+                        </View>
+                    </View>
+                    <View style={{
+                        marginTop: 20,
+                        flex: 1
+                    }} >
+                        <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 18,marginStart:"7%" }} >Upcoming Tasks</Text>
+                        <FlatList
+                            data={upcomingTasks}
+                            style={{ marginTop: 20, marginStart:'9%' }}
+                            keyExtractor={item => item.bookingId}
+                            renderItem={renderUpcomingTasks}
+                            ItemSeparatorComponent={FlatListItemSeparator}
+                        />
                     </View>
                 </View>
-                <View style={{ marginTop: '4%',
-        marginHorizontal: '10%',
-        flex: 1}} >
-                    <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 18 }} >Upcoming Tasks</Text>
-                    <FlatList
-                        data={upcomingTasks}
-                        style={{  marginTop:15}}
-                        keyExtractor={item => item.bookingId}
-                        renderItem={renderUpcomingTasks}
-                        />
-                </View>
-            </View>
             }
         </ScrollView>
     )
@@ -192,13 +199,10 @@ const styles = StyleSheet.create({
         maxWidth: '88%'
     },
     mainContainer: {
-        marginVertical: '4%',
-        marginHorizontal: '10%',
         flex: 1
     },
     contentBox: {
         flexDirection: 'row',
-        marginTop: 15,
         marginEnd: '5%',
     },
     filler: {

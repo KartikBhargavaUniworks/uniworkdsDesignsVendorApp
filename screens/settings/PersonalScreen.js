@@ -201,7 +201,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.emergencyContact}
             onChangeText={(number)=>this.setState({emergencyNumber:number})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Emergency Contact</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >Emergency Contact</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
@@ -210,7 +210,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.email}
             onChangeText={(email)=>this.setState({email:email})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Email</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >Email</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
@@ -218,7 +218,7 @@ class PersonalScreen extends React.Component{
           <TextInput style = {styles.textInputPhone}
             placeholder="Carpenter"
             onChangeText={(category)=>this.setState({category:category})}/>
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Category</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >Category</Text>
           </View>
         </View>
         <View style = {{marginLeft:'15%' , marginTop:'5%'}} >
@@ -230,7 +230,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.state}
             onChangeText={(state)=>this.setState({state:state})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >State</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >State</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
@@ -239,7 +239,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.city}
             onChangeText={(city)=>this.setState({city:city})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >City</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >City</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
@@ -248,7 +248,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.area}
             onChangeText={(area)=>this.setState({area:area})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Area</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >Area</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
@@ -257,7 +257,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.street}
             onChangeText={(street)=>this.setState({street:street})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Street</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >Street</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
@@ -266,7 +266,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.building}
             onChangeText={(building)=>this.setState({building:building})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Building</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >Building</Text>
           </View>
         </View>
         <View style={styles.containerRecatngle}>
@@ -275,7 +275,7 @@ class PersonalScreen extends React.Component{
             placeholder={this.state.personalData.personal.flat}
             onChangeText={(flatNo)=>this.setState({flatNo:flatNo})}
           />
-          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:15 }} >Flat No.</Text>
+          <Text style={{ color: 'black' , marginTop:15,marginRight:10, fontSize:12 }} >Flat No.</Text>
           </View>
         </View>
         {/* <MapView

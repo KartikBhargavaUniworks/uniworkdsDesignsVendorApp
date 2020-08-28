@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Dimensions, Picker, CheckBox, Image, FlatList, ListView, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, CheckBox, Image, FlatList, TextInput } from 'react-native';
 import Feather from 'react-native-vector-icons/FontAwesome'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import FeatherIcon from "react-native-vector-icons/Feather";
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import Complete from '../components/Complete';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { createIconSetFromFontello } from 'react-native-vector-icons';
 
 const UpcomingTaskScreen = ({ navigation }) => {
   const [showDescription, setShowDescription] = useState(false)
@@ -103,7 +100,7 @@ const UpcomingTaskScreen = ({ navigation }) => {
       </View>
     )
   }
-  const renderMileStoneNames = ({ item }) => {
+  const renderMileStoneNames = () => {
     return (
       <View style={{ marginHorizontal: '10%' }} >
         <View >
@@ -168,7 +165,7 @@ const UpcomingTaskScreen = ({ navigation }) => {
         <Text style={{ alignSelf: 'center', color: '#353535', fontSize: 24, opacity: 0.7, fontWeight: 'bold' }} >Drawings</Text>
         <Image
           style={{ width: '100%', height: 250, marginTop: 8 }}
-          source={require('../assets/images/unnamed.jpg')}
+          source={require('../../assets/images/unnamed.jpg')}
         />
         <Text style={{ alignSelf: 'center', color: '#353535', fontSize: 24, fontWeight: 'bold', marginTop: 15, opacity: 0.7 }} >Prerequisite</Text>
         <View style={{ flex: 1, marginTop: 15 }} >

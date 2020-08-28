@@ -4,7 +4,7 @@ import Feather from 'react-native-vector-icons/FontAwesome'
 import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker } from 'react-native-maps';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import images from '../assets/images'
+import images from '../../assets/images'
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const SiteRequestScreen = ({ navigation, route }) => {
@@ -105,8 +105,8 @@ const SiteRequestScreen = ({ navigation, route }) => {
         initialRegion={{
           latitude: project.lat,
           longitude: project.long,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 15.000,
+          longitudeDelta: 15.000,
         }}
         customMapStyle={mapStyle}
       >

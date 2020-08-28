@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import TutorialsScreen from '../screens/TutorialsScreen';
-import WalletScreen from '../screens/WalletScreen';
-import NotificationsScreen from '../screens/NotificationsScreen';
+import TutorialsScreen from '../screens/vendor/TutorialsScreen';
+import WalletScreen from '../screens/vendor/WalletScreen';
+import NotificationsScreen from '../screens/vendor/NotificationsScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import SettingsHomeScreen from '../screens/settings/SettingsHomeScreen';
+import NotificationSuperVisorScreen from '../screens/supervisors/NotificationScreenSuperVisor';
 
 const Tab = createBottomTabNavigator();
-
+let isSuperVisor = true
 const HomeTabScreen = () => (
-    <Tab.Navigator
+      <Tab.Navigator
       initialRouteName="Home"
       activeColor="#fff"
     >
-      <Tab.Screen
+        <Tab.Screen
         name="Tutorials"
         component={TutorialsScreen}
         options={{
@@ -28,19 +29,8 @@ const HomeTabScreen = () => (
         }}
       />
       <Tab.Screen
-        name="Wallet"
-        component={WalletScreen}
-        options={{
-          tabBarLabel: 'Wallet',
-          tabBarColor: '#1f65ff',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="account-balance-wallet" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Notifications"
-        component={NotificationsScreen}
+        component={isSuperVisor?NotificationSuperVisorScreen :NotificationsScreen}
         options={{
           tabBarLabel: 'Notifications',
           tabBarColor: '#694fad',
@@ -49,6 +39,21 @@ const HomeTabScreen = () => (
           ),
         }}
       />
+      {
+        isSuperVisor?null:
+        <Tab.Screen
+        name="Wallet"
+        component={ WalletScreen}
+        options={{
+          tabBarLabel: 'Wallet',
+          tabBarColor: '#1f65ff',
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="account-balance-wallet" color={color} size={26} />
+          ),
+        }}
+      />
+      }
+     
       <Tab.Screen
         name="Profile"
         component={SettingsHomeScreen}
@@ -60,7 +65,10 @@ const HomeTabScreen = () => (
           ),
         }}
       />
+      
     </Tab.Navigator>
+    
+   
 );
 
 export default HomeTabScreen;
