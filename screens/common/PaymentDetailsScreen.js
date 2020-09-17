@@ -9,7 +9,7 @@ function PaymentDetailsScreen(props, route) {
           IFSC:'',
           accountHolder:'',
           PAN:'',
-          aadharlink:'',
+          aadharNumber:'',
           GSTIN:'',
           confirmAccoutnNo:''
   })
@@ -29,7 +29,7 @@ function PaymentDetailsScreen(props, route) {
           IFSC:data.IFSC,
           accountHolder:data.accountHolder,
           PAN:data.PAN,
-          aadharlink:data.aadharlink,
+          aadharlink:data.aadharNumber,
           GSTIN:data.GSTIN,
         })
       }).then((response) => {
@@ -122,7 +122,7 @@ function PaymentDetailsScreen(props, route) {
               onChangeText={(aadhar) => {
                 setData({
                   ...data,
-                  aadharlink:aadhar
+                  aadharNumber:aadhar
                 })
               }}
             />

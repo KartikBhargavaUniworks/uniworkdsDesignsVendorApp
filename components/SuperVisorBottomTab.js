@@ -13,7 +13,7 @@ import { AsyncStorage } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
-const HomeTabScreen = (props) => (
+const SupervisorBottomTabScreen = (props) => (
 
   <Tab.Navigator
     initialRouteName="Home"
@@ -32,7 +32,7 @@ const HomeTabScreen = (props) => (
     />
     <Tab.Screen
       name="Notifications"
-      component={NotificationsScreen}
+      component={NotificationSuperVisorScreen}
       options={{
         tabBarLabel: 'Notifications',
         tabBarColor: '#694fad',
@@ -41,19 +41,6 @@ const HomeTabScreen = (props) => (
         ),
       }}
     />
-
-    <Tab.Screen
-      name="Wallet"
-      component={WalletScreen}
-      options={{
-        tabBarLabel: 'Wallet',
-        tabBarColor: '#1f65ff',
-        tabBarIcon: ({ color }) => (
-          <MaterialIcons name="account-balance-wallet" color={color} size={26} />
-        ),
-      }}
-    />
-
 
     <Tab.Screen
       name="Profile"
@@ -72,5 +59,5 @@ const HomeTabScreen = (props) => (
 
 );
 
-export default HomeTabScreen;
+export default SupervisorBottomTabScreen;
 

@@ -23,6 +23,7 @@ const TutorialsScreen = ({ navigation }) => {
 
     const fetchData = async ()=>{
         let contact = await AsyncStorage.getItem('contact')
+        
     }
     const saveDetails=async(val)=>{
        await AsyncStorage.setItem('userName', val.userName)

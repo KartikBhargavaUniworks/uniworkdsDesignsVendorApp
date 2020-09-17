@@ -4484,6 +4484,13 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-animated-loader@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-animated-loader/-/react-native-animated-loader-0.0.8.tgz#5475166c2185da641c6a20477fc93819144383e8"
+  integrity sha512-NFdAbMABoS1Gfv4BGYmVKAAK++y1cAPjooJefRAAOVC0ehUGsWpzu+AwvgJPmbTCAJ6xwXGzpDdvP1n/Bw/6ZA==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-native-dropdown-menu@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dropdown-menu/-/react-native-dropdown-menu-2.0.0.tgz#1d9e6614dc3799b79e3151f8a54fb2d83c7d899f"

@@ -6,24 +6,19 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Spinner from 'react-native-loading-spinner-overlay'
 
 const NotificationSuperVisorScreen = ({ navigation }) => {
-    const [siteRequests, setSiteRequests] = useState([]);
-    const [supervisors, setSupervisors] = useState([]);
     const [upcomingTasks, setUpcomingTasks] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const fetchData = async () => {
-        let result = await fetch('https://uniworksvendorapis.herokuapp.com/notifications/1')
+        let result = await fetch('https://uniworksvendorapis.herokuapp.com/supervisor/notifications/1 ')
             .then(response => {
                 return response.json()
             })
             .then(json => {
-                setSiteRequests(json.siterequests)
-                setSupervisors(json.supervisors)
-                setUpcomingTasks(json.restallprojects)
+                setUpcomingTasks(json)
                 setLoading(false)
             })
     }
     useEffect(() => {
-        console.log('trigger use effect hook');
         fetchData()
     }, []);
 
@@ -38,42 +33,18 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
             />
         );
     }
-    const renderItem = ({ item }) => {
-        return (
-            <View style={{ backgroundColor: '#ffffff', flex: 1 }} >
-                <View style={styles.contentBox} >
-                    <Text style={{ fontSize: 16 }} >SuperVisor Request</Text>
-                    <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <TouchableOpacity>
-                        <Entypo style={{ fontSize: 24, top: 4 }} name='cross' color='#E32626' />
-                    </TouchableOpacity>
-                </View>
-                <Text style={{ color: '#353535', fontSize: 22, fontWeight: 'bold' }} >{item.userName} </Text>
-                <View style={{
-                    flexDirection: 'row',
-                    marginEnd: '5%',
-                }} >
-                    <Text style={{ marginTop: '5%' }} >{item.contact}</Text>
-                    <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <TouchableOpacity style={{ top: 5 }} >
-                        <Text style={{ color: '#518A42', alignSelf: 'center', fontSize: 20, fontWeight: 'bold' }} >Approve</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-    }
 
     const renderUpcomingTasks = ({ item }) => {
         return (
             <View style={{ flex: 1 }} >
-                <TouchableOpacity onPress={() => navigation.navigate('UpcomingTaskScreen')} >
+                <TouchableOpacity onPress={() => navigation.navigate('StartSiteScreen')} >
                     <View style={styles.contentBox} >
                         <Text style={{ fontSize: 18 }} >Booking ID:{item.bookingId}</Text>
                     </View>
                     <View style={styles.contentBox} >
                         <Text style={{ color: '#353535', fontSize: 18, fontWeight: 'bold' }} >Kartik </Text>
                         <View style={{ flex: 1, flexDirection: 'row' }} />
-                        <Text style={{ color: '#353535', fontSize: 18 }} >{item.totalarea} Sqft</Text>
+                        <Text style={{ color: '#353535', fontSize: 18 }} >{item.totalArea} Sqft</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',
@@ -89,41 +60,17 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
             </View>
         )
     }
-
-    const renderSiteRequest = ({ item }) => {
-        return (
-            <TouchableOpacity onPress={() => navigation.navigate('SiteRequestScreen')} >
-                <View style={styles.contentBox} >
-                    <Text style={{ fontSize: 16, color: '#000000' }} >Site Request</Text>
-                    <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <TouchableOpacity>
-                        <Entypo style={{ fontSize: 24, top: 4 }} name='cross' color='#E32626' />
-                    </TouchableOpacity>
-                </View>
-                <Text style={{ color: '#353535', fontSize: 22, fontWeight: 'bold' }} >{item.totalArea} Sqft</Text>
-                <View style={{
-                    flexDirection: 'row',
-                    marginEnd: '5%',
-                    marginBottom: 5
-                }} >
-                    <Text style={{ alignSelf: 'center' }} >{item.startDate}</Text>
-                    <View style={{ flex: 1, flexDirection: 'row' }} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }} >₹ {item.budget}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }} showsVerticalScrollIndicator={false}>
+        <View style={{ flex: 1, backgroundColor: '#ffffff' }} >
             {isLoading ?
 
                 <Spinner
                     //visibility of Overlay Loading Spinner
                     visible={isLoading}
                     //Text with the Spinner
-                    textContent={'Loading...'}
+                    textContent={'Fetching Notifications...'}
                     //Text style of the Spinner Text
-                    textStyle={{ color: '#FFF', }}
+                    textStyle={{ color: '#OOO', }}
                 />
                 :
 
@@ -140,24 +87,6 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{ flex: 1 }} >
-                        <View style={styles.mainContainer} >
-                            <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 20, marginHorizontal: '7%', marginTop: 20 }} >Approvals</Text>
-                            <FlatList
-                                style={{ marginTop: 20, marginStart: '9%' }}
-                                data={supervisors}
-                                renderItem={renderItem}
-                                ItemSeparatorComponent={FlatListItemSeparator}
-                            />
-                            <FlatList
-                                style={{ marginTop: 30, marginStart: '9%' }}
-                                data={siteRequests}
-                                renderItem={renderSiteRequest}
-                                ItemSeparatorComponent={FlatListItemSeparator}
-                            />
-
-                        </View>
-                    </View>
                     <View style={{
                         marginTop: 20,
                         flex: 1
@@ -165,7 +94,7 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
                         <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 18,marginStart:"7%" }} >Upcoming Tasks</Text>
                         <FlatList
                             data={upcomingTasks}
-                            style={{ marginTop: 20, marginStart:'9%' }}
+                            style={{ marginTop: 20, marginHorizontal:'9%' }}
                             keyExtractor={item => item.bookingId}
                             renderItem={renderUpcomingTasks}
                             ItemSeparatorComponent={FlatListItemSeparator}
@@ -173,7 +102,7 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
                     </View>
                 </View>
             }
-        </ScrollView>
+        </View>
     )
 }
 

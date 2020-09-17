@@ -8,6 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 const UpcomingTaskScreen = ({ navigation }) => {
   const [showDescription, setShowDescription] = useState(false)
   const [siteCleaned, setSiteCleaned] = useState(false)
+  const [upcomingTaskDetails, setUpcomingTaskDetails] = useState([])
 
   let PreRequisite = ['White marking make a detailed mark at joints and a simple line for pipes'
     , 'Check the pipes dia and set the chipping depth'
@@ -72,9 +73,22 @@ const UpcomingTaskScreen = ({ navigation }) => {
       })
     })
   })
-    const handleShowDescription = () => {
-      setShowDescription(!showDescription)
-    }
+
+  const fetchData = async () => {
+    let result = await fetch('https://uniworksvendorapis.herokuapp.com/vendor/projectArea/1/1 ')
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        console.log(json)
+      })
+  }
+  useEffect(() => {
+    fetchData()
+  }, []);
+  const handleShowDescription = () => {
+    setShowDescription(!showDescription)
+  }
   const renderEachMileStones = ({ item }) => {
     return (
       <View style={{ marginStart: 5 }} >
@@ -193,8 +207,8 @@ const UpcomingTaskScreen = ({ navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 15, marginRight: '10%', marginRight: '5%' }} >
           <Text style={{ alignSelf: 'center' }} >Site Cleaned</Text>
           <CheckBox
-          value={siteCleaned}
-          onValueChange={()=>setSiteCleaned(!siteCleaned)}
+            value={siteCleaned}
+            onValueChange={() => setSiteCleaned(!siteCleaned)}
           />
         </View>
         <View style={{ marginTop: '15%', alignItems: 'flex-end', marginRight: '10%' }} >
@@ -238,12 +252,12 @@ const UpcomingTaskScreen = ({ navigation }) => {
             <Text style={styles.Number}>25</Text>
           </View>
         </View >
-        <View style={{alignItems:'center', marginTop:50}} >
-        <TouchableOpacity style={styles.approvedButton} onPress={() => navigation.replace('HomeScreen')} >
-          <View style={{ alignItems: 'center' }} >
-            <Text style={{ fontSize: 20, color: '#ffffff' }}>Home Page</Text>
-          </View>
-        </TouchableOpacity >
+        <View style={{ alignItems: 'center', marginTop: 50 }} >
+          <TouchableOpacity style={styles.approvedButton} onPress={() => navigation.replace('HomeScreen')} >
+            <View style={{ alignItems: 'center' }} >
+              <Text style={{ fontSize: 20, color: '#ffffff' }}>Home Page</Text>
+            </View>
+          </TouchableOpacity >
         </View>
       </View>
     </ScrollView>

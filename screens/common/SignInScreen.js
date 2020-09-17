@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, AsyncStorage, Dimensions, } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, AsyncStorage, Dimensions, Alert, } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import { ScrollView } from "react-native-gesture-handler";
 import OTP from "../../components/OTP";
@@ -27,7 +27,7 @@ export default class SignInScreen extends Component {
       confirmSignUp: true,
       showType: false,
       supervisorNumber: "",
-      userNameSql:""
+      userNameSql: ""
     }
   }
 
@@ -39,7 +39,7 @@ export default class SignInScreen extends Component {
 
   signUp = async () => {
     console.log(this.state)
-    var user = this.state.userName.substring(0,3).concat(new Date().getTime()) 
+    var user = this.state.userName.substring(0, 3).concat(new Date().getTime())
     console.log(user)
     try {
       const result = await fetch('https://uniworksvendorapis.herokuapp.com/auth/register', {
@@ -52,15 +52,16 @@ export default class SignInScreen extends Component {
           Username: "+91" + this.state.phoneNumber,
           Password: this.state.password,
           name: this.state.userName,
-          userName:user
+          userName: user
         })
-      })
-      let respone = await result.json()
-      console.log(respone)
-      await AsyncStorage.setItem("userNameSql", this.state.userNameSql)
-      this.setState({
-        showOtp: true
-      })
+      }).then((response) => response.text())
+        .then((json) => {
+          this.setState({
+            showOtp: true
+
+          })
+          console.log(json)
+        }).catch(e => Alert.alert(e.toString()))
     } catch (e) {
       console.log(e)
     }
@@ -80,7 +81,7 @@ export default class SignInScreen extends Component {
   confirmSignup = async () => {
     var code = this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4 + this.state.otp5 + this.state.otp6
     console.log(code)
-    
+    if (!this.state.showType) {
       try {
         const result = await fetch("https://uniworksvendorapis.herokuapp.com/auth/confirmSignup", {
           method: 'POST',
@@ -95,14 +96,36 @@ export default class SignInScreen extends Component {
           })
         }).then((response) => response.json())
           .then((json) => {
-            this.saveTokenandNavigate(json)
-          }
-          )
+            console.log(json)
+            this.setState({ showType: true, showOtp: false })
+          })
+          .catch(e => Alert.alert(e.toString()))
       } catch (e) {
-        console.log(e.toString())
+        Alert.alert(e.toString())
       }
-      this.setState({ showType: true, showOtp: false })
-      console.log(this.state)
+    } else {
+      if(this.state.Contractor) {
+        const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/+91"+this.state.phoneNumber, {
+          method:'PUT',
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            role:"CSVD",
+            contact:"+91"+this.state.phoneNumber
+          })
+        }).then(response=>response.text())
+        .then(json=>{
+          this.saveRole("CSVD")
+        }).catch(e=>Alert.alert(e.toString()))
+      }
+    }
+  }
+
+  saveRole = async(role) =>{
+    await AsyncStorage.setItem("role", "CSVD")
+    this.props.navigation.navigate("Personal Details")
   }
   saveTokenandNavigate = async (val) => {
     await AsyncStorage.setItem('accessToken', val)

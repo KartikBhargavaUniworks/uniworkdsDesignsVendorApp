@@ -47,9 +47,12 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
         )
       })
         .then((json) => {
-          saveTokenandNavigate((((json.accessToken))))
+          saveTokenandNavigate((((json))))
         })
-        .catch(e => console.log(e.toString()))
+        .catch(e => {
+          setLoading(false)
+          alert(e.toString())
+        })
 
     } catch (e) {
       console.log(e)
@@ -57,14 +60,21 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
   }
 
   const saveTokenandNavigate = async (val) => {
-    await AsyncStorage.setItem('accessToken', val)
+    await AsyncStorage.setItem('accessToken', val.accessToken)
     await AsyncStorage.setItem("contact", "+91" + data.phoneNumber)
+    await AsyncStorage.setItem("role", val.role)
     setLoading(false)
+    console.log(val.role)
+    console.log(val.accessToken)
+    if(val.role == "CSVD"){
     navigation.navigate('HomeScreen')
+  } else {
+    navigation.navigate('SuperVisorBottom')
   }
+}
 
   return (
-    <ScrollView scrollEnabled={true} >
+    <ScrollView  >
       {isLoading ?
 
         <Spinner
@@ -74,7 +84,6 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
           textContent={'Loggin In...'}
           //Text style of the Spinner Text
           textStyle={{ color: '#000', }}
-          color='#000000'
           
         />
         :
