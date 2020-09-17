@@ -7,7 +7,7 @@ import images from '../../assets/images'
 
 const TutorialsScreen = ({ navigation }) => {
     const [showList, setShowList] = useState(false);
-    const [chosenName, setChosenName] = useState('Select Category')
+    const [chosenCategory, setChosenCatgeory] = useState('Select Category')
     const [chosenSubCategory, setChosenSubCategory] = useState([])
     const [vendorPersonal, setVendorPersonal] = useState([])
     const [isLoading, setLoading] = useState(false);
@@ -18,12 +18,34 @@ const TutorialsScreen = ({ navigation }) => {
     const show = () => {
         setShowList(!showList)
         if (showList == true)
-            setChosenName('Select Category')
+            setChosenCatgeory('Select Category')
     }
 
     const fetchData = async ()=>{
         let contact = await AsyncStorage.getItem('contact')
-        
+        let role = await AsyncStorage.getItem('role')
+        let middleware=''
+        if(role=='CSVD') {
+            middleware = 'vendor'
+        } else {
+            middleware = 'supervisor'
+        }
+        console.log(contact +'  '+role)
+        let result = await fetch('https://uniworksvendorapis.herokuapp.com/'+middleware+'/'+contact)
+        .then(response => {
+            return response.json()
+        }).then(json =>{
+           if(middleware=='supervisor') {
+                setVendorPersonal(json.supervisor)
+                saveDetails(json.supervisor)
+           } else {
+               setVendorPersonal(json.vendor)
+               saveDetails(json.supervisor)
+           }
+           setCategoryDetails(json.categorydetails)
+          setChosenCatgeory(json.categorydetails[0].categoryName)
+          showSubcategories(json.categorydetails[0].id)
+        })
     }
     const saveDetails=async(val)=>{
        await AsyncStorage.setItem('userName', val.userName)
@@ -54,7 +76,7 @@ const TutorialsScreen = ({ navigation }) => {
             marginStart:'14%'
         }} >
                 <TouchableOpacity onPress={() => {
-                    setChosenName(item.categoryName)
+                    setChosenCatgeory(item.categoryName)
                     showSubcategories(item.id)
                     setShowList(!showList)
                     setShowSubCategory(!showSubCategory)
@@ -142,7 +164,8 @@ const TutorialsScreen = ({ navigation }) => {
             //Text style of the Spinner Text
             textStyle={{color: '#FFF',}}
           />
-            :
+            : null
+             }
             <View style={{ flex: 1 }} >
                 <View style={{ height: 60, backgroundColor: '#5FE3B9' }} />
                 <View style={{ flex: 1, flexDirection: 'row' }} >
@@ -183,7 +206,7 @@ const TutorialsScreen = ({ navigation }) => {
                 <View style={{ flex: 1}} >
                     <TouchableOpacity onPress={show} style={{ marginTop:'5%'}} >
                         <View style={styles.rect3} >
-                            <Text style={{ alignSelf: 'center', color: '#000000', fontSize: 16 }} >{chosenName}</Text>
+                            <Text style={{ alignSelf: 'center', color: '#000000', fontSize: 16 }} >{chosenCategory}</Text>
                             <View style={{ flex: 1, flexDirection: 'row' }} />
                             <MaterialIcons name='keyboard-arrow-down' size={24} style={{ margin: 20 }} />
                         </View>
@@ -225,7 +248,6 @@ const TutorialsScreen = ({ navigation }) => {
                    </View>
                 </View>
             </View>
-}
         </ScrollView>
                 
     )

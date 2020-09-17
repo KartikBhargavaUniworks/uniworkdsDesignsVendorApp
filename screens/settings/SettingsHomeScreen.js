@@ -11,13 +11,25 @@ const SettingsHomeScreen = ({navigation}) => {
     const[isLoading, setLoading] = useState(true);
     const fetchData = async ()=>{
         let contact = await AsyncStorage.getItem('contact')
-        let result = await  fetch('https://uniworksvendorapis.herokuapp.com/vendor/'+contact)
+        let role = await AsyncStorage.getItem('role')
+        let middleware=''
+        if(role=='CSVD') {
+            middleware = 'vendor'
+        } else {
+            middleware = 'supervisor'
+        }
+        let result = await  fetch('https://uniworksvendorapis.herokuapp.com/'+middleware+'/'+contact)
         .then(response=>{
             return response.json()
         })
         .then(json=>{
-            setPersonalData(json.vendor)
-            setLoading(false)
+            if(middleware=='supervisor') {
+                setPersonalData(json.supervisor)
+                setLoading(false)
+           } else {
+               setPersonalData(json.vendor)
+               setLoading(false)
+           }
         })
     }
 
@@ -36,7 +48,7 @@ const SettingsHomeScreen = ({navigation}) => {
             //Text style of the Spinner Text
             textStyle={{color: '#FFF',}}
           />
-            :
+            : null}
             <View>
                 <Text style={{ alignSelf: 'center', marginTop: '10%', color: '#353535', fontSize: 24, fontWeight: 'bold', marginBottom: '5%' }} >Settings</Text>
             <TouchableOpacity style={{ flexDirection:'row', marginTop:50, marginStart:'10%' }} onPress={()=>navigation.navigate('PersonalScreen',{
@@ -64,7 +76,6 @@ const SettingsHomeScreen = ({navigation}) => {
                 <Text style={{ alignSelf: 'center', color: '#353535', fontSize: 24, marginStart:10 }}>About</Text>
             </TouchableOpacity>
             </View>
-}
         </View>
     )
 }
