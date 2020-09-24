@@ -75,18 +75,15 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
 
   return (
     <ScrollView  >
-      {isLoading ?
 
         <Spinner
           //visibility of Overlay Loading Spinner
           visible={isLoading}
           //Text with the Spinner
-          textContent={'Loggin In...'}
+          textContent={'Logging In...'}
           //Text style of the Spinner Text
           textStyle={{ color: '#000', }}
-          
-        />
-        :
+          />
         <View style={styles.mainContainer} >
           <View style={styles.signInRow}>
             <Text style={styles.signIn} onPress={() => goBack()}>Sign in</Text>
@@ -146,7 +143,7 @@ function LoginScreen({ navigation: { goBack }, navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      }
+    
     </ScrollView>
   );
 }

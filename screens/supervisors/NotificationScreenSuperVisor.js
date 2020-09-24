@@ -62,7 +62,6 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
     }
     return (
         <View style={{ flex: 1, backgroundColor: '#ffffff' }} >
-            {isLoading ?
 
                 <Spinner
                     //visibility of Overlay Loading Spinner
@@ -72,7 +71,7 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
                     //Text style of the Spinner Text
                     textStyle={{ color: '#OOO', }}
                 />
-                :
+                
 
                 <View style={{ flex: 1 }} >
                     <Text style={{ alignSelf: 'center', marginTop: '10%', color: '#353535', fontSize: 24, fontWeight: 'bold', marginBottom: '5%' }} >Notifications</Text>
@@ -101,7 +100,7 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
                         />
                     </View>
                 </View>
-            }
+            
         </View>
     )
 }

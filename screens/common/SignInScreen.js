@@ -142,7 +142,7 @@ export default class SignInScreen extends Component {
       <ScrollView scrollEnabled={true} >
         <View style={styles.mainContainer} >
           <View style={styles.signInRow}>
-            <Text style={styles.signIn} >Sign in</Text>
+            <Text style={styles.signIn} >Sign Up</Text>
             <View style={styles.signInFiller}></View>
             <Text style={styles.logIn} onPress={() => this.props.navigation.navigate('LoginScreen')}>Log in</Text>
           </View>

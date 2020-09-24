@@ -240,9 +240,6 @@ const UpcomingTaskSupervisorScreen = ({ navigation }) => {
               onValueChange={() => setSiteCleaned(!siteCleaned)}
             />
           </View>
-          <View style={{ marginTop: '15%', alignItems: 'flex-end', marginRight: '10%' }} >
-            <Text style={{ color: '#5D83C6', fontSize: 16 }} >Report an issue</Text>
-          </View>
           <View style={styles.SiteEngineerRow}>
             <Text style={{ color: '#353535', fontSize: 18, fontWeight: 'bold' }} >Address </Text>
             <View style={styles.SiteEngineerFiller}></View>
@@ -284,7 +281,7 @@ const UpcomingTaskSupervisorScreen = ({ navigation }) => {
           <View style={{ alignItems: 'center', marginTop: 50 }} >
             <TouchableOpacity style={styles.approvedButton} onPress={() => navigation.replace('SuperVisorBottom')} >
               <View style={{ alignItems: 'center' }} >
-                <Text style={{ fontSize: 20, color: '#ffffff' }}>Home Page</Text>
+                <Text style={{ fontSize: 20, color: '#ffffff' }}>Submit</Text>
               </View>
             </TouchableOpacity >
           </View>

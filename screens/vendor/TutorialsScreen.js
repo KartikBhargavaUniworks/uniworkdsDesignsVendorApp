@@ -4,6 +4,7 @@ import { TouchableOpacity, ScrollView, FlatList } from 'react-native-gesture-han
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Spinner from 'react-native-loading-spinner-overlay'
 import images from '../../assets/images'
+import { Toolbar, ToolbarBackAction, ToolbarContent, ToolbarAction } from 'react-native-paper';
 
 const TutorialsScreen = ({ navigation }) => {
     const [showList, setShowList] = useState(false);
@@ -153,9 +154,8 @@ const TutorialsScreen = ({ navigation }) => {
         );
     }
     return (
+        
         <ScrollView>
-             {isLoading? 
-            
             <Spinner
             //visibility of Overlay Loading Spinner
             visible={isLoading}
@@ -164,44 +164,15 @@ const TutorialsScreen = ({ navigation }) => {
             //Text style of the Spinner Text
             textStyle={{color: '#FFF',}}
           />
-            : null
-             }
+       
             <View style={{ flex: 1 }} >
+           
                 <View style={{ height: 60, backgroundColor: '#5FE3B9' }} />
-                <View style={{ flex: 1, flexDirection: 'row' }} >
-                    <View style={{ marginLeft: '10%', marginTop: 10 }} >
-                        <Text style={{ color: '#000000', fontSize: 20 }} >Welcome</Text>
-    <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold', maxWidth:90 }} >{vendorPersonal.name}</Text>
-                    </View>
-                    <View style={{ marginLeft: '30%', marginTop: 10, flexDirection: 'row' }} >
-                        <TouchableOpacity
-                            style={{
-                                borderWidth: 1,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: 70,
-                                height: 70,
-                                backgroundColor: '#EAEAEA',
-                                borderRadius: 50,
-                            }} >
-                            <MaterialIcons name='report-problem' size={20} color='#f50c0c' />
-                            <Text>Report</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                borderWidth: 1,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: 70,
-                                height: 70,
-                                backgroundColor: '#EAEAEA',
-                                borderRadius: 50,
-                                marginLeft: '10%'
-                            }} >
-                            <MaterialIcons name='assignment' size={20} color='#000000' />
-                            <Text>T&C</Text>
-                        </TouchableOpacity>
-                    </View>
+                <View style={{ flex: 1, flexDirection: 'row',marginLeft: '10%', marginTop: 10 }} >
+                   <View>
+                        <Text style={{ color: '#000000', fontSize: 24,fontWeight: 'bold', }} >Welcome, </Text>
+    <Text style={{ color: '#000000', fontSize: 20, alignSelf:'center', textAlign:'center' }} >{vendorPersonal.name}</Text>
+    </View>        
                 </View>
                 <View style={{ flex: 1}} >
                     <TouchableOpacity onPress={show} style={{ marginTop:'5%'}} >
