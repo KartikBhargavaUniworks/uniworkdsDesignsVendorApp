@@ -11,7 +11,7 @@ const NotificationsScreen = ({ navigation }) => {
     const [upcomingTasks, setUpcomingTasks] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const fetchData = async () => {
-        let result = await fetch('https://uniworksvendorapis.herokuapp.com/notifications/1')
+        let result = await fetch('https://uniworksvendorapis.herokuapp.com/notifications/17')
             .then(response => {
                 return response.json()
             })
@@ -125,8 +125,8 @@ const NotificationsScreen = ({ navigation }) => {
                     //Text style of the Spinner Text
                     textStyle={{ color: '#FFF', }}
                 />
-                :
-
+                :null
+            }
                 <View style={{ flex: 1 }} >
                     <Text style={{ alignSelf: 'center', marginTop: '10%', color: '#353535', fontSize: 24, fontWeight: 'bold', marginBottom: '5%' }} >Notifications</Text>
                     <View style={styles.rect3} >
@@ -172,7 +172,6 @@ const NotificationsScreen = ({ navigation }) => {
                         />
                     </View>
                 </View>
-            }
         </ScrollView>
     )
 }

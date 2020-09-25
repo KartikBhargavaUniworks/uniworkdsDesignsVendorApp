@@ -68,42 +68,43 @@ const UpcomingTaskSupervisorScreen = ({ navigation }) => {
   }
   useEffect(() => {
     fetchAreaId()
-  }, [])
+    let isMounted = true
+  },[])
   const fetchAreaId = async () => {
-    let result = await fetch('https://uniworksvendorapis.herokuapp.com/vendor/projectArea/1')
+    let result = await fetch('https://uniworksvendorapis.herokuapp.com/vendor/projectArea/3')
       .then(response => {
         return response.json()
       })
       .then(json => {
-        getAreaId(json.projectArea)
-      }).catch(e=>{
+        let areaId = []
+        json.projectArea.forEach(element => {
+          areaId.push(element.areaId)
+        });
+        setAreaId(areaId)
+        fetchAreas(areaId)
+      }).catch(e => {
         alert(e.toString())
-        setLoading({ isLoading: false })
-      })
-  }
-  const getAreaId = (data) => {
-    let areaId = []
-    data.forEach(element => {
-      areaId.push(element.areaId)
-    });
-    setAreaId({ areaId: areaId })
-    fetchAreas(areaId)
+        setLoading(false)
+      }).finally(e => setLoading(false))
   }
   const fetchAreas = async (areas) => {
-    let result = await fetch('https://uniworksvendorapis.herokuapp.com/vendor/projectArea/1/' + areas[0].toString())
+    let result = await fetch('https://uniworksvendorapis.herokuapp.com/vendor/projectArea/3/' + areas[0].toString())
       .then(response => {
         return response.json()
       })
       .then(json => {
-        handleResponse(json)
-      }).catch(e=>{
+        setProjectAreaWise(json)
+        setLoading(false)
+        console.log(json.miniCategory[0].miniCategoryName)
+      }).catch(e => {
         alert(e.toString())
         setLoading(false)
       })
   }
-  const handleResponse=(json)=>{
+  const handleResponse = (json) => {
     setProjectAreaWise(json)
     setLoading(false)
+    console.log(json)
   }
   let array = []
   let sunarray = []

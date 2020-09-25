@@ -69,7 +69,7 @@ const NotificationSuperVisorScreen = ({ navigation }) => {
                     //Text with the Spinner
                     textContent={'Fetching Notifications...'}
                     //Text style of the Spinner Text
-                    textStyle={{ color: '#OOO', }}
+                    textStyle={{ color: '#000000', }}
                 />
                 
 
