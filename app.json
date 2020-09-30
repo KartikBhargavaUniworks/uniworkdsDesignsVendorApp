@@ -10,11 +10,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -22,7 +17,18 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.uniworksdesigns.UniworksdesignsVendorApp",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
+    },
+    "android":{
+      "package": "com.uniworksdesigns.UniworksdesignsVendorApp",
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDtoo2n0WeCDQZ8FvTZlfJF1869lOcFiOY"
+        }
+      }
     }
   }
 }

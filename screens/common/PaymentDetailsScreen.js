@@ -4,72 +4,45 @@ import { ScrollView } from "react-native-gesture-handler";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 function PaymentDetailsScreen(props, route) {
-  const [dataAccountNumber, setdataAccountNumber] = useState({
-    Name: "custom:AccountNumber",
-    Value: ""
-  })
-  const [dataConfirmAccountNumber, setdataConfirmAccountNumber] = useState({
-    Name: "custom:category",
-    Value: ""
-  })
-  const [dataIFSCCODE, setdataIFSCCODE] = useState({
-    Name: "custom:state",
-    Value: ""
-  })
-  const [dataAcountHolderName, setdataAccountHolderName] = useState({
-    Name: "custom:city",
-    Value: ""
-  })
-  const [dataPANNUmber, setdataPANNumber] = useState({
-    Name: "custom:area",
-    Value: ""
-  })
-  const [dataAadharDetails, setdataAadharDetails] = useState({
-    Name: "custom:street",
-    Value: ""
-  })
-  const [dataGst, setdataGst] = useState({
-    Name: "custom:gst",
-    Value: ""
+  const[data, setData] = useState({
+    accountNum:'',
+          IFSC:'',
+          accountHolder:'',
+          PAN:'',
+          aadharNumber:'',
+          GSTIN:'',
+          confirmAccoutnNo:''
   })
   const handleSubmission = async () => {
-    let photo = await AsyncStorage.getItem('AadhaarPhotoUri')
-    let Photo = {
-      Name: "custom:aadharUri",
-      Value: photo
-    }
-    console.log(photo)
-    let Array = []
-    Array.push(dataAccountNumber)
-    Array.push(dataIFSCCODE)
-    Array.push(dataAcountHolderName)
-    Array.push(dataPANNUmber)
-    Array.push(dataAadharDetails)
-    Array.push(Photo)
+    console.log(data)
     try {
-      let accessToken = await AsyncStorage.getItem('accessToken')
-      let userName = await AsyncStorage.getItem('userName')
-      const result = await fetch("https://still-plains-75686.herokuapp.com/user/updateUserAttributes", {
+      const result = await fetch("https://uniworksvendorapis.herokuapp.com/user/+918174033803", {
         method: 'PUT',
         headers: {
-          authorization: accessToken
+          Accept: '*/*',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          UserName: userName,
-          UserAttributes: Array
+          contact:'+918174033803',
+          userName: "Kar1596977190778",
+          accountNum:data.accountNum,
+          IFSC:data.IFSC,
+          accountHolder:data.accountHolder,
+          PAN:data.PAN,
+          aadharlink:data.aadharNumber,
+          GSTIN:data.GSTIN,
         })
       }).then((response) => {
         const statusCode = response.status
         console.log(statusCode)
-      })
-      props.navigation.navigate("Payment Details");
+        return response.json()
+      }).then(json=>{
+        props.navigation.navigate("HomeScreen");
+        console.log(json)})
+      .catch(e=>alert(e.toString()))
     } catch (e) {
       console.log(e)
     }
-  }
-  const handleUrl = () => {
-    const state = props.navigation
-    console.log(state.params.photo)
   }
 
   return (
@@ -82,9 +55,9 @@ function PaymentDetailsScreen(props, route) {
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
               onChangeText={(accoutnNo) => {
-                setdataAccountNumber({
-                  Name: "custom:AccountNumber",
-                  Value: accoutnNo
+                setData({
+                  ...data,
+                  accountNum:accoutnNo
                 })
               }}
             />
@@ -95,9 +68,9 @@ function PaymentDetailsScreen(props, route) {
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
               onChangeText={(confirmAccoutnNo) => {
-                setdataConfirmAccountNumber({
-                  Name: "custom:Confirm",
-                  Value: confirmAccoutnNo
+                setData({
+                  ...data,
+                  confirmAccoutnNo:confirmAccoutnNo
                 })
               }}
             />
@@ -108,9 +81,9 @@ function PaymentDetailsScreen(props, route) {
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
               onChangeText={(ifscCode) => {
-                setdataIFSCCODE({
-                  Name: "custom:ifsc",
-                  Value: ifscCode
+                setData({
+                  ...data,
+                  IFSC:ifscCode
                 })
               }}
             />
@@ -121,9 +94,9 @@ function PaymentDetailsScreen(props, route) {
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
               onChangeText={(name) => {
-                setdataAccountHolderName({
-                  Name: "custom:accountHolderName",
-                  Value: name
+                setData({
+                  ...data,
+                  accountHolder:name
                 })
               }}
             />
@@ -134,9 +107,9 @@ function PaymentDetailsScreen(props, route) {
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
               onChangeText={(pan) => {
-                setdataPANNumber({
-                  Name: "custom:pan",
-                  Value: pan
+                setData({
+                  ...data,
+                  PAN:pan
                 })
               }}
             />
@@ -147,9 +120,9 @@ function PaymentDetailsScreen(props, route) {
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
               onChangeText={(aadhar) => {
-                setdataAadharDetails({
-                  Name: "custom:aadhar",
-                  Value: aadhar
+                setData({
+                  ...data,
+                  aadharNumber:aadhar
                 })
               }}
             />
@@ -169,9 +142,9 @@ function PaymentDetailsScreen(props, route) {
           <View style={styles.rect3} >
             <TextInput style={styles.textInputPhone}
               onChangeText={(gst) => {
-                setdataGst({
-                  Name: "custom:gst",
-                  Value: gst
+                setData({
+                  ...data,
+                  GSTIN:gst
                 })
               }}
             />

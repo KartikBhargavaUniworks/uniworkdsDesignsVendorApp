@@ -31,31 +31,37 @@ export default class OTP extends Component {
         <View style={{ flex: 0.6, justifyContent: "space-evenly", flexDirection: 'row' }}  >
           <TextInput
             maxLength={1}
+            keyboardType="numeric"
             style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
             onChangeText={(val)=>this.setState({otp1:val})}
           />
           <TextInput
             maxLength={1}
+            keyboardType="numeric"
             style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
             onChangeText={(val)=>this.setState({otp2:val})}
           />
           <TextInput
             maxLength={1}
+            keyboardType="numeric"
             style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
             onChangeText={(val)=>this.setState({otp3:val})}
           />
           <TextInput
             maxLength={1}
+            keyboardType="numeric"
             style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
             onChangeText={(val)=>this.setState({otp4:val})}
           />
           <TextInput
             maxLength={1}
+            keyboardType="numeric"
             style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
             onChangeText={(val)=>this.setState({otp5:val})}
           />
           <TextInput
             maxLength={1}
+            keyboardType="numeric"
             style={{ backgroundColor: '#ffffff', fontWeight: '600', alignSelf: 'center', padding: 10, fontSize: 20, height: 55, width: '10%', borderRadius: 10, borderWidth: 0.5, borderColor: 'grey' }}
             onChangeText={(val)=> this.handle(val)}
           />

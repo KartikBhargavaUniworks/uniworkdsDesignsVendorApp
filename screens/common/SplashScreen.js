@@ -1,24 +1,24 @@
 import React, { Component } from "react";
-import { StyleSheet, View, StatusBar, Image, TouchableOpacity, Button, Text } from "react-native";
+import { StyleSheet, View, StatusBar, Image, TouchableOpacity, Button, Text, ImageBackground } from "react-native";
 
 function SplashScreen({navigation}) {
   return (
     <View
       style={styles.container}
     >
-      <Image
-        source={require("../assets/images/green-plant-on-white-wooden-table-36447421.jpg")}
-        resizeMode="contain"
+      <ImageBackground
+        source={require("../../assets/images/green-plant-on-white-wooden-table-36447421.jpg")}
         style={styles.image2}
-      ></Image> 
+      >
       <TouchableOpacity
         style={styles.button}
-        onPress = {() => navigation.navigate('SignInScreen')}
+        onPress = {() => navigation.navigate('UpcomingTaskSupervisorScreen')}
       >
         <View style = {styles.containerButton} >
         <Text styles ={styles.text} >Get Started</Text>
         </View>
       </TouchableOpacity>
+      </ImageBackground> 
     </View>
   );
 }
@@ -26,17 +26,15 @@ function SplashScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginBottom : 36
   },
   image2: {
-    height: 410,
+    height:'100%',
     borderTopLeftRadius: 50,
     borderBottomRightRadius: 50,
-    position: "absolute",
-    top: 100,
-    width: "75%"
+    width:'100%',
+    flex:1,
+    justifyContent:'flex-end',
+    alignItems:'center'
   },
   containerButton :{
     flex:1,
@@ -54,7 +52,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(112,112,112,1)",
     borderStyle: "solid",
-    borderRadius: 100
+    borderRadius: 100,
+    marginBottom:60
+   
   },
   text: {
     fontFamily: "comfortaa-regular",

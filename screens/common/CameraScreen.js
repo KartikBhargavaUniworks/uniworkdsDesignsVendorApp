@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, TouchableOpacity, BackHandler, AsyncStorage } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Camera } from 'expo-camera';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
  const  CameraComponent = ({navigation})=> {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null)
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [photoUrl, setPhotoUrl] =useState("")
+  const [type] = useState(Camera.Constants.Type.back);
   const handlePhotoUrl=async(val)=>{
     console.log(val)
-   let result = await AsyncStorage.setItem('AadhaarPhotoUri', val)
    navigation.navigate('Payment Details')
   }
 useEffect(() => {

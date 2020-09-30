@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text , StyleSheet} from 'react-native'
-import WalletComponent from '../components/WalletComponent'
+import WalletComponent from '../../components/WalletComponent'
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import Feather from 'react-native-vector-icons/Feather'
 
